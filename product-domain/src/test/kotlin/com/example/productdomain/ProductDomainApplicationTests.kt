@@ -1,12 +1,13 @@
-package com.example.product
+package com.example.productdomain
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class ProductApplicationTests {
+class ProductDomainApplicationTests {
 
     @Test
     fun contextLoads() {
     }
+
 }
