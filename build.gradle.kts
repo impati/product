@@ -1,16 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
+
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
     kotlin("jvm") version "1.9.22"
+    kotlin("kapt") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
-    kotlin("plugin.jpa") version "1.9.22"
 }
-
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -22,34 +20,55 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-}
+    group = "com.example"
+    version = "0.0.1-SNAPSHOT"
 
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+subprojects {
+
+    apply {
+        plugin("kotlin")
+        plugin("kotlin-spring")
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
+        plugin("kotlin-allopen")
+    }
+
+    dependencies {
+
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
+
+        implementation("org.springframework.boot:spring-boot-starter")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("org.junit.jupiter:junit-jupiter")
+    }
 }
 
+tasks.getByName<BootJar>("bootJar") {
+    enabled = false
+}
 
+tasks.getByName<Jar>("jar") {
+    enabled = true
+}
 
