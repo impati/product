@@ -22,4 +22,13 @@ class ProductTest {
 
         assertThat(product.age).isEqualTo(26)
     }
+
+    @Test
+    fun fail() {
+        val product = Product("ice")
+
+        product.changeName("ice cream")
+
+        assertThat(product.name).isEqualTo("ice")
+    }
 }
