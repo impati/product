@@ -2,8 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - feature/product-3/ci-and-sonacloud
+      - dev
   pull_request:
+    branches:
+      - dev
 jobs:
   sonarcloud:
     name: SonarCloud
