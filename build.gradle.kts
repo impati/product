@@ -8,7 +8,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("kapt") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
-    id("org.sonarqube") version "4.0.0.2929"
+    id("org.sonarqube") version "4.2.1.3168"
     jacoco
 }
 
@@ -94,6 +94,17 @@ subprojects {
 
     tasks.getByName<Jar>("jar") {
         enabled = true
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
     }
 }
 
