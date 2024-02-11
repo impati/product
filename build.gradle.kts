@@ -95,6 +95,17 @@ subprojects {
     tasks.getByName<Jar>("jar") {
         enabled = true
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
 }
 
 tasks.register("jacocoRootReport", JacocoReport::class) {
