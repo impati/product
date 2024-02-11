@@ -2,7 +2,7 @@ package com.example.productdomain
 
 class Product(
     var name: String,
-    var age: Int
+    var age: Int = 20
 ) {
 
     fun changeName(newName: String) {
