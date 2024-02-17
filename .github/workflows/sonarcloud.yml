@@ -5,11 +5,16 @@ on:
       - dev
   pull_request:
     branches:
+      - main
       - dev
 jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
     steps:
       - uses: actions/checkout@v3
         with:
@@ -26,6 +31,8 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+      - name: Start Docker Compose services
+        run: docker-compose -f ./docker/docker-compose.yml up -d
       - name: Build and analyze
         run: ./gradlew build jacocoTestReport sonar --info
         env:
