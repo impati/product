@@ -33,6 +33,8 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       - name: Start Docker Compose services
         run: docker-compose -f ./docker/docker-compose.yml up -d
+      - name: build
+        run: ./gradlew build
       - name: Start flyway
         run: ./gradlew flywayClean flywayBaseline flywayMigrate
       - name: Build and analyze
