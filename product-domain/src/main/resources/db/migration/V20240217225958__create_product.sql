@@ -1,0 +1,7 @@
+CREATE TABLE products (
+    product_id BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY ,
+    name VARCHAR(51) NOT NULL,
+    price INT NOT NULL,
+    quantity INT NOT NULL,
+    status VARCHAR(51) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
