@@ -5,7 +5,7 @@ import jakarta.persistence.Embeddable
 
 @Embeddable
 class ProductName(
-    var value: String
+    val value: String
 ) {
 
     init {
@@ -17,5 +17,18 @@ class ProductName(
     companion object {
         private const val MAX_LENGTH = 50
         private const val MIN_LENGTH = 1
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ProductName
+
+        return value == other.value
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 }

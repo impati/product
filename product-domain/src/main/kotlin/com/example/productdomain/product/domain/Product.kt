@@ -7,26 +7,25 @@ import jakarta.persistence.*
 @Table(name = "products")
 class Product(
 
-    @Column(name = "name")
-    val name: String,
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "name"))
+    val name: ProductName,
 
-    @Column(name = "price")
-    val price: Int,
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "price"))
+    val price: ProductPrice,
 
-    @Column(name = "quantity")
-    val quantity: Int,
+    @Embedded
+    @AttributeOverride(name = "value", column = Column(name = "quantity"))
+    val quantity: ProductQuantity,
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     val status: ProductStatus = ProductStatus.PRE_REGISTRATION,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    @Column(name = "product_id")
+    val id: Long? = null,
 ) {
-
-    init {
-        ProductName(name)
-        ProductPrice(price)
-        ProductQuantity(quantity)
-    }
 }
