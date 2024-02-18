@@ -1,7 +1,9 @@
 package com.example.productapi.product.controller
 
 import com.example.productapi.product.controller.request.ProductCreateRequest
+import com.example.productapi.product.controller.response.ProductResponse
 import com.example.productdomain.product.application.ProductCommandService
+import com.example.productdomain.product.application.ProductQueryService
 import com.example.productdomain.product.domain.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.DisplayName
@@ -15,12 +17,14 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
-import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
+import org.springframework.restdocs.payload.PayloadDocumentation.*
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -32,6 +36,8 @@ class ProductControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
     @MockBean
     val productCommandService: ProductCommandService,
+    @MockBean
+    val productQueryService: ProductQueryService,
     @Autowired
     val objectMapper: ObjectMapper
 ) {
@@ -65,6 +71,40 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량")
+                    )
+                )
+            )
+    }
+
+    @Test
+    @DisplayName("[GET] [/v1/products/{productId}] 상품 조회 API")
+    fun getProduct() {
+        val productId = 1L;
+        val product = Product(
+            ProductName("test"),
+            ProductPrice(1000),
+            ProductQuantity(100),
+            ProductStatus.PRE_REGISTRATION,
+            productId
+        )
+        given(productQueryService.getProduct(productId)).willReturn(product);
+
+        mockMvc.perform(get("/v1/products/{productId}", productId))
+            .andExpect(status().isOk)
+            .andExpect(handler().methodName("getProduct"))
+            .andExpect(content().string(objectMapper.writeValueAsString(ProductResponse.from(product))))
+            .andDo(
+                document(
+                    "product/get",
+                    preprocessRequest(Preprocessors.prettyPrint()),
+                    preprocessResponse(Preprocessors.prettyPrint()),
+                    pathParameters(parameterWithName("productId").description("상품 ID")),
+                    responseFields(
+                        fieldWithPath("productId").description("상품 ID"),
+                        fieldWithPath("name").description("상품 이름"),
+                        fieldWithPath("price").description("상품 가격"),
+                        fieldWithPath("quantity").description("상품 수량"),
+                        fieldWithPath("status").description("상품 상태")
                     )
                 )
             )
