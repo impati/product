@@ -19,7 +19,6 @@ include::{snippets}/product/create/request-fields.adoc[]
 
 include::{snippets}/product/create/http-response.adoc[]
 
-
 == 상품 조회
 
 === 요청
@@ -27,7 +26,20 @@ include::{snippets}/product/create/http-response.adoc[]
 include::{snippets}/product/get/http-request.adoc[]
 include::{snippets}/product/get/path-parameters.adoc[]
 
+=== 응답
+
+include::{snippets}/product/get/http-response.adoc[]
+include::{snippets}/product/get/response-fields.adoc[]
+
+== 상품 수정
+
+=== 요청
+
+include::{snippets}/product/edit/http-request.adoc[]
+include::{snippets}/product/edit/path-parameters.adoc[]
+include::{snippets}/product/edit/request-fields.adoc[]
 
 === 응답
-include::{snippets}/product/get/response-fields.adoc[]
-include::{snippets}/product/get/http-response.adoc[]
+
+include::{snippets}/product/edit/http-response.adoc[]
+include::{snippets}/product/edit/response-fields.adoc[]

@@ -9,5 +9,16 @@ Content-Type: application/json
 }
 
 ### 상품 조회
-GET http://localhost:8080/v1/products/17
+GET http://localhost:8080/v1/products/70
 Content-Type: application/json
+
+### 상품 수정
+PUT http://localhost:8080/v1/products/70
+Content-Type: application/json
+
+{
+  "name": "foo-bar",
+  "price": 10000,
+  "quantity": 10,
+  "status": "STOP"
+}

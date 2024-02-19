@@ -1,6 +1,7 @@
 package com.example.productapi.product.controller
 
 import com.example.productapi.product.controller.request.ProductCreateRequest
+import com.example.productapi.product.controller.request.ProductEditRequest
 import com.example.productapi.product.controller.response.ProductResponse
 import com.example.productdomain.product.application.ProductCommandService
 import com.example.productdomain.product.application.ProductQueryService
@@ -19,17 +20,27 @@ class ProductController(
 ) {
 
     @PostMapping("/v1/products")
-    fun createProduct(@Valid @RequestBody productCreateRequest: ProductCreateRequest): ResponseEntity<Unit> {
-        val productId = productCommandService.create(productCreateRequest.toInput()).id
+    fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ResponseEntity<Unit> {
+        val productId = productCommandService.create(request.toInput()).id
 
         return ResponseEntity.created(getUri(productId!!)).build()
     }
 
     @GetMapping("/v1/products/{productId}")
     fun getProduct(@PathVariable productId: Long): ResponseEntity<ProductResponse> {
-        val response = ProductResponse.from(productQueryService.getProduct(productId))
+        val product = productQueryService.getProduct(productId)
 
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(ProductResponse.from(product))
+    }
+
+    @PutMapping("/v1/products/{productId}")
+    fun editProduct(
+        @PathVariable productId: Long,
+        @Valid @RequestBody request: ProductEditRequest
+    ): ResponseEntity<ProductResponse> {
+        val product = productCommandService.edit(productId, request.toInput())
+
+        return ResponseEntity.ok(ProductResponse.from(product))
     }
 
     private fun getUri(createdResourceId: Long): URI {

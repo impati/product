@@ -7,11 +7,14 @@ import jakarta.validation.constraints.NotBlank
 
 
 class ProductCreateRequest(
+
     @field:NotBlank
     val name: String,
+
     @field:Min(0)
     @field:Max(10_000_000_000)
     val price: Int,
+
     @field:Min(0)
     @field:Max(10_000_000_000)
     val quantity: Int
