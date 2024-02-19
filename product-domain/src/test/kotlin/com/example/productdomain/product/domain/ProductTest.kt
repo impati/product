@@ -18,6 +18,16 @@ class ProductTest {
     }
 
     @Test
+    @DisplayName("상품 이름 , 가격 , 수량 , 상태를 변경할 수 있다.")
+    fun update() {
+        val product = Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100))
+
+        assertThat(product.apply { update("other", 100000, 10000, ProductStatus.STOP) })
+            .extracting(Product::name, Product::price, Product::quantity, Product::status)
+            .contains(ProductName("other"), ProductPrice(100000), ProductQuantity(10000), ProductStatus.STOP)
+    }
+
+    @Test
     @DisplayName("상품의 이름이 올바르지 않으면 상품 생성에 실패한다.")
     fun createFailBecauseOfName() {
         assertThatThrownBy { Product(ProductName("test".repeat(500)), ProductPrice(1000), ProductQuantity(100)) }
