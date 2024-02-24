@@ -43,4 +43,17 @@ class ProductCommandServiceTest(
             .extracting(Product::name, Product::price, Product::quantity, Product::status)
             .contains(ProductName("test2"), ProductPrice(100), ProductQuantity(10000), ProductStatus.SELLING);
     }
+
+    @Test
+    @DisplayName("상품 ID 에 해당하는 상품을 삭제한다.")
+    fun delete() {
+        val product = Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100))
+        val persistProduct = productRepository.save(product)
+
+        productCommandService.delete(persistProduct.id!!)
+
+        val deletedProduct = productRepository.findByIdOrThrow(persistProduct.id)
+        assertThat(productRepository.count()).isEqualTo(1)
+        assertThat(deletedProduct.status).isEqualTo(ProductStatus.DELETED)
+    }
 }

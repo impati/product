@@ -43,6 +43,14 @@ class ProductController(
         return ResponseEntity.ok(ProductResponse.from(product))
     }
 
+    @DeleteMapping("/v1/products/{productId}")
+    fun deleteProduct(@PathVariable productId: Long): ResponseEntity<Unit> {
+        productCommandService.delete(productId)
+
+        return ResponseEntity.noContent().build()
+    }
+
+
     private fun getUri(createdResourceId: Long): URI {
         return ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")

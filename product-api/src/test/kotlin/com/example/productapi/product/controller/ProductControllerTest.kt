@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.willDoNothing
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -32,6 +33,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @AutoConfigureRestDocs(uriHost = "api.test.com", uriPort = 8080)
 @WebMvcTest(controllers = [ProductController::class])
 class ProductControllerTest @Autowired constructor(
+
     @Autowired
     val mockMvc: MockMvc,
     @MockBean
@@ -151,6 +153,24 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("quantity").description("상품 수량"),
                         fieldWithPath("status").description("상품 상태")
                     )
+                )
+            )
+    }
+
+    @Test
+    fun deleteProduct() {
+        val productId = 1L
+        willDoNothing().given(productCommandService).delete(productId)
+
+        mockMvc.perform(delete("/v1/products/{productId}", productId))
+            .andExpect(status().isNoContent)
+            .andExpect(handler().methodName("deleteProduct"))
+            .andDo(
+                document(
+                    "product/delete",
+                    preprocessRequest(Preprocessors.prettyPrint()),
+                    preprocessResponse(Preprocessors.prettyPrint()),
+                    pathParameters(parameterWithName("productId").description("상품 ID")),
                 )
             )
     }

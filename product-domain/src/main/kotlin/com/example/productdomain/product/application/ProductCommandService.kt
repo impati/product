@@ -27,4 +27,10 @@ class ProductCommandService(
 
         return product.apply { update(input.name, input.price, input.quantity, input.status) }
     }
+
+    fun delete(productId: Long) {
+        val product: Product = productRepository.findByIdOrThrow(productId)
+
+        product.delete();
+    }
 }

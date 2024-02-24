@@ -35,4 +35,8 @@ class Product(
         this.quantity = ProductQuantity(quantity);
         this.status = status;
     }
+
+    fun delete() {
+        this.status = ProductStatus.DELETED
+    }
 }

@@ -50,4 +50,14 @@ class ProductTest {
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("상품 수량은 0보다 크거나 같고 1000000000보다 작아야합니다.")
     }
+
+    @Test
+    @DisplayName("상품의 상태를 DELETE 로 변경한다.")
+    fun delete() {
+        val product = Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100))
+
+        product.delete()
+
+        assertThat(product.status).isEqualTo(ProductStatus.DELETED)
+    }
 }
