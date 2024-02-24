@@ -1,5 +1,6 @@
 package com.example.productdomain.product.domain
 
+import com.example.productdomain.product.createDefaultProduct
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -20,7 +21,7 @@ class ProductTest {
     @Test
     @DisplayName("상품 이름 , 가격 , 수량 , 상태를 변경할 수 있다.")
     fun update() {
-        val product = Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100))
+        val product = createDefaultProduct()
 
         assertThat(product.apply { update("other", 100000, 10000, ProductStatus.STOP) })
             .extracting(Product::name, Product::price, Product::quantity, Product::status)
@@ -54,7 +55,7 @@ class ProductTest {
     @Test
     @DisplayName("상품의 상태를 DELETE 로 변경한다.")
     fun delete() {
-        val product = Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100))
+        val product = createDefaultProduct()
 
         product.delete()
 

@@ -3,6 +3,7 @@ package com.example.productdomain.product.application
 import com.example.productdomain.config.SpringBootTester
 import com.example.productdomain.product.application.dto.ProductCreateInput
 import com.example.productdomain.product.application.dto.ProductEditInput
+import com.example.productdomain.product.createDefaultProduct
 import com.example.productdomain.product.domain.*
 import com.example.productdomain.util.findByIdOrThrow
 import org.assertj.core.api.Assertions.assertThat
@@ -31,8 +32,7 @@ class ProductCommandServiceTest(
     @Test
     @DisplayName("상품 정보를 수정한다.")
     fun edit() {
-        val beforeProduct =
-            productRepository.save(Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100)))
+        val beforeProduct = productRepository.save(createDefaultProduct())
         val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING)
 
         productCommandService.edit(beforeProduct.id!!, input);
@@ -47,7 +47,7 @@ class ProductCommandServiceTest(
     @Test
     @DisplayName("상품 ID 에 해당하는 상품을 삭제한다.")
     fun delete() {
-        val product = Product(ProductName("test"), ProductPrice(1000), ProductQuantity(100))
+        val product = createDefaultProduct()
         val persistProduct = productRepository.save(product)
 
         productCommandService.delete(persistProduct.id!!)

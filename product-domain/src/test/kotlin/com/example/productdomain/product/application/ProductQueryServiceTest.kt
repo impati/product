@@ -1,6 +1,7 @@
 package com.example.productdomain.product.application
 
 import com.example.productdomain.config.SpringBootTester
+import com.example.productdomain.product.createDefaultProduct
 import com.example.productdomain.product.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -34,7 +35,7 @@ class ProductQueryServiceTest @Autowired constructor(
     @Test
     @DisplayName("상품 ID 에 해당하는 상품이 없으면 조회하는데 실패한다.")
     fun failGetProduct() {
-        val product = Product(ProductName("Test"), ProductPrice(100), ProductQuantity(10))
+        val product = createDefaultProduct()
         val persistentProduct = productRepository.save(product)
 
         assertThatThrownBy { productQueryService.getProduct(-persistentProduct.id!!) }
