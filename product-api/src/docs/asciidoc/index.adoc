@@ -1,0 +1,56 @@
+= API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+= 상품 API
+
+== 상품 생성
+
+=== 요청
+
+include::{snippets}/product/create/http-request.adoc[]
+include::{snippets}/product/create/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/product/create/http-response.adoc[]
+
+== 상품 조회
+
+=== 요청
+
+include::{snippets}/product/get/http-request.adoc[]
+include::{snippets}/product/get/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/product/get/http-response.adoc[]
+include::{snippets}/product/get/response-fields.adoc[]
+
+== 상품 수정
+
+=== 요청
+
+include::{snippets}/product/edit/http-request.adoc[]
+include::{snippets}/product/edit/path-parameters.adoc[]
+include::{snippets}/product/edit/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/product/edit/http-response.adoc[]
+include::{snippets}/product/edit/response-fields.adoc[]
+
+== 상품 삭제
+
+=== 요청
+
+include::{snippets}/product/delete/http-request.adoc[]
+include::{snippets}/product/delete/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/product/delete/http-response.adoc[]

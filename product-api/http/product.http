@@ -1,0 +1,27 @@
+### 상품 생성
+POST http://localhost:8080/v1/products
+Content-Type: application/json
+
+{
+  "name": "foo",
+  "price": 1000,
+  "quantity": 1
+}
+
+### 상품 조회
+GET http://localhost:8080/v1/products/70
+Content-Type: application/json
+
+### 상품 수정
+PUT http://localhost:8080/v1/products/70
+Content-Type: application/json
+
+{
+  "name": "foo-bar",
+  "price": 10000,
+  "quantity": 10,
+  "status": "STOP"
+}
+
+### 상품 삭제
+DELETE http://localhost:8080/v1/products/70

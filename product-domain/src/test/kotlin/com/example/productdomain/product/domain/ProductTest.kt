@@ -1,5 +1,6 @@
 package com.example.productdomain.product.domain
 
+import com.example.productdomain.product.createDefaultProduct
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -15,6 +16,16 @@ class ProductTest {
         assertThat(product)
             .extracting(Product::name, Product::price, Product::quantity, Product::status)
             .contains(ProductName("test"), ProductPrice(1000), ProductQuantity(100), ProductStatus.PRE_REGISTRATION);
+    }
+
+    @Test
+    @DisplayName("상품 이름 , 가격 , 수량 , 상태를 변경할 수 있다.")
+    fun update() {
+        val product = createDefaultProduct()
+
+        assertThat(product.apply { update("other", 100000, 10000, ProductStatus.STOP) })
+            .extracting(Product::name, Product::price, Product::quantity, Product::status)
+            .contains(ProductName("other"), ProductPrice(100000), ProductQuantity(10000), ProductStatus.STOP)
     }
 
     @Test
@@ -39,5 +50,15 @@ class ProductTest {
         assertThatThrownBy { Product(ProductName("test"), ProductPrice(1000), ProductQuantity(2_000_000_000)) }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("상품 수량은 0보다 크거나 같고 1000000000보다 작아야합니다.")
+    }
+
+    @Test
+    @DisplayName("상품의 상태를 DELETE 로 변경한다.")
+    fun delete() {
+        val product = createDefaultProduct()
+
+        product.delete()
+
+        assertThat(product.status).isEqualTo(ProductStatus.DELETED)
     }
 }
