@@ -11,8 +11,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-class ProductCommandServiceTest(
-    @Autowired
+class ProductCommandServiceTest @Autowired constructor(
     val productCommandService: ProductCommandService
 ) : SpringBootTester() {
 

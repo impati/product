@@ -3,9 +3,9 @@ package com.example.productdomain.product.application.dto
 import com.example.productdomain.product.domain.*
 
 data class ProductCreateInput(
-    private val name: String,
-    private val price: Int,
-    private val quantity: Int
+    val name: String,
+    val price: Int,
+    val quantity: Int
 ) {
 
     fun toProduct(): Product {
