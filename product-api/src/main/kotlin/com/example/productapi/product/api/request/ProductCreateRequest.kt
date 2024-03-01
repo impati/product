@@ -1,4 +1,4 @@
-package com.example.productapi.product.controller.request
+package com.example.productapi.product.api.request
 
 import com.example.productdomain.product.application.dto.ProductCreateInput
 import jakarta.validation.constraints.Max

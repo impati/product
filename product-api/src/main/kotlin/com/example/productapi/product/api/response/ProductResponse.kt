@@ -1,4 +1,4 @@
-package com.example.productapi.product.controller.response
+package com.example.productapi.product.api.response
 
 import com.example.productdomain.product.domain.Product
 import com.example.productdomain.product.domain.ProductStatus

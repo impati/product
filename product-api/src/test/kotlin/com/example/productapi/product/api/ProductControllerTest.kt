@@ -1,8 +1,8 @@
-package com.example.productapi.product.controller
+package com.example.productapi.product.api
 
-import com.example.productapi.product.controller.request.ProductCreateRequest
-import com.example.productapi.product.controller.request.ProductEditRequest
-import com.example.productapi.product.controller.response.ProductResponse
+import com.example.productapi.product.api.request.ProductCreateRequest
+import com.example.productapi.product.api.request.ProductEditRequest
+import com.example.productapi.product.api.response.ProductResponse
 import com.example.productdomain.product.application.ProductCommandService
 import com.example.productdomain.product.application.ProductQueryService
 import com.example.productdomain.product.domain.*
