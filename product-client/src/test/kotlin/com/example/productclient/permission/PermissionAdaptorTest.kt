@@ -13,11 +13,11 @@ class PermissionAdaptorTest {
     @DisplayName("멤버가 특정 permission 을 가지고 있으면 true 를 응답한다.")
     fun hasPermission() {
         val permissionId = 999L
-        val memberNumber = "member"
+        val memberNumber = "0000"
 
         val permissionResponse = permissionAdaptor.hasPermission(permissionId, memberNumber)
 
-        assertThat(permissionResponse.hasPermission).isTrue()
+        assertThat(permissionResponse).isTrue()
     }
 
     @Test

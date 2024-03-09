@@ -1,5 +1,6 @@
 package com.example.productdomain.product.application
 
+import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.dto.ProductCreateInput
 import com.example.productdomain.product.application.dto.ProductEditInput
 import com.example.productdomain.product.domain.Product
@@ -22,15 +23,23 @@ class ProductCommandService(
         return product;
     }
 
-    fun edit(productId: Long, input: ProductEditInput): Product {
+    fun edit(productId: Long, input: ProductEditInput, updatedAudit: UpdatedAudit): Product {
         val product: Product = productRepository.findByIdOrThrow(productId)
 
-        return product.apply { update(input.name, input.price, input.quantity, input.status) }
+        return product.apply {
+            update(
+                updatedAudit,
+                input.name,
+                input.price,
+                input.quantity,
+                input.status
+            )
+        }
     }
 
-    fun delete(productId: Long) {
+    fun delete(productId: Long, updatedAudit: UpdatedAudit) {
         val product: Product = productRepository.findByIdOrThrow(productId)
 
-        product.delete();
+        product.delete(updatedAudit);
     }
 }

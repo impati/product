@@ -1,5 +1,7 @@
 package com.example.productapi.product.api.request
 
+import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.dto.ProductCreateInput
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
@@ -19,7 +21,13 @@ class ProductCreateRequest(
     @field:Max(10_000_000_000)
     val quantity: Int
 ) {
-    fun toInput(): ProductCreateInput {
-        return ProductCreateInput(name, price, quantity)
+    fun toInput(createdAudit: CreatedAudit): ProductCreateInput {
+        return ProductCreateInput(
+            name,
+            price,
+            quantity,
+            createdAudit,
+            UpdatedAudit(createdAudit.createdAt, createdAudit.createdBy)
+        )
     }
 }

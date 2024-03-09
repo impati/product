@@ -1,11 +1,19 @@
 package com.example.productdomain.product.domain
 
+import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.UpdatedAudit
 import jakarta.persistence.*
 
 
 @Entity
 @Table(name = "products")
 class Product(
+
+    @Embedded
+    val createdAudit: CreatedAudit,
+
+    @Embedded
+    var updatedAudit: UpdatedAudit,
 
     @Embedded
     @AttributeOverride(name = "value", column = Column(name = "name"))
@@ -29,14 +37,22 @@ class Product(
     val id: Long? = null,
 ) {
 
-    fun update(name: String, price: Int, quantity: Int, status: ProductStatus) {
-        this.name = ProductName(name);
-        this.price = ProductPrice(price);
-        this.quantity = ProductQuantity(quantity);
-        this.status = status;
+    fun update(
+        updatedAudit: UpdatedAudit,
+        name: String,
+        price: Int,
+        quantity: Int,
+        status: ProductStatus
+    ) {
+        this.name = ProductName(name)
+        this.price = ProductPrice(price)
+        this.quantity = ProductQuantity(quantity)
+        this.status = status
+        this.updatedAudit = updatedAudit
     }
 
-    fun delete() {
+    fun delete(updatedAudit: UpdatedAudit) {
         this.status = ProductStatus.DELETED
+        this.updatedAudit = updatedAudit
     }
 }
