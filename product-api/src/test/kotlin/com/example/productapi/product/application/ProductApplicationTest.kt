@@ -23,7 +23,7 @@ class ProductApplicationTest @Autowired constructor(
     fun createProduct() {
         val memberNumber = "0000"
         val createdAudit = CreatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
-        val request = ProductCreateRequest("test", 1000, 1000)
+        val request = ProductCreateRequest("test", 1000, 1000, "0000")
 
         val productId = productApplication.createProduct(request, createdAudit)
 
@@ -35,7 +35,7 @@ class ProductApplicationTest @Autowired constructor(
     fun createProductFail() {
         val memberNumber = "9999"
         val createdAudit = CreatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
-        val request = ProductCreateRequest("test", 1000, 1000)
+        val request = ProductCreateRequest("test", 1000, 1000, "0000")
 
         assertThatThrownBy { productApplication.createProduct(request, createdAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -48,11 +48,11 @@ class ProductApplicationTest @Autowired constructor(
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
         val productId = productApplication.createProduct(
-            ProductCreateRequest("test", 1000, 1000),
+            ProductCreateRequest("test", 1000, 1000, "0000"),
             CreatedAudit(createdAt, memberNumber)
         )
         val updateAudit = UpdatedAudit(createdAt.plusDays(1), memberNumber)
-        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING)
+        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, "0000")
 
         val response = productApplication.editProduct(productId, request, updateAudit)
 
@@ -78,7 +78,7 @@ class ProductApplicationTest @Autowired constructor(
     fun editProductFail() {
         val memberNumber = "9998"
         val updateAudit = UpdatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
-        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING)
+        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, memberNumber)
 
         assertThatThrownBy { productApplication.editProduct(1L, request, updateAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -91,7 +91,7 @@ class ProductApplicationTest @Autowired constructor(
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
         val productId = productApplication.createProduct(
-            ProductCreateRequest("test", 1000, 1000),
+            ProductCreateRequest("test", 1000, 1000, "0000"),
             CreatedAudit(createdAt, memberNumber)
         )
         val updateAudit = UpdatedAudit(createdAt.plusDays(1), memberNumber)

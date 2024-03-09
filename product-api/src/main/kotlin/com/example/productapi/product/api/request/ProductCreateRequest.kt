@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 
 
-class ProductCreateRequest(
+data class ProductCreateRequest(
 
     @field:NotBlank
     val name: String,
@@ -19,7 +19,10 @@ class ProductCreateRequest(
 
     @field:Min(0)
     @field:Max(10_000_000_000)
-    val quantity: Int
+    val quantity: Int,
+
+    @field:NotBlank
+    val memberNumber: String
 ) {
     fun toInput(createdAudit: CreatedAudit): ProductCreateInput {
         return ProductCreateInput(
