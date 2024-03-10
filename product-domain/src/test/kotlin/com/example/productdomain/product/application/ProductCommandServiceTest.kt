@@ -1,5 +1,7 @@
 package com.example.productdomain.product.application
 
+import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.config.SpringBootTester
 import com.example.productdomain.product.application.dto.ProductCreateInput
 import com.example.productdomain.product.application.dto.ProductEditInput
@@ -10,6 +12,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDateTime
 
 class ProductCommandServiceTest @Autowired constructor(
     val productCommandService: ProductCommandService
@@ -18,7 +21,8 @@ class ProductCommandServiceTest @Autowired constructor(
     @Test
     @DisplayName("상품 기본 정보로 상품을 생성한다.")
     fun create() {
-        val input = ProductCreateInput("test", 1000, 10)
+        val now = LocalDateTime.of(2024, 3, 6, 0, 0)
+        val input = ProductCreateInput("test", 1000, 10, CreatedAudit(now, "0000"), UpdatedAudit(now, "0000"))
 
         val product = productCommandService.create(input)
 
@@ -34,7 +38,11 @@ class ProductCommandServiceTest @Autowired constructor(
         val beforeProduct = productRepository.save(createDefaultProduct())
         val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING)
 
-        productCommandService.edit(beforeProduct.id!!, input);
+        productCommandService.edit(
+            beforeProduct.id!!,
+            input,
+            UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
+        );
 
         val afterProduct = productRepository.findByIdOrThrow(beforeProduct.id)
         assertThat(afterProduct.id).isEqualTo(beforeProduct.id)
@@ -49,7 +57,7 @@ class ProductCommandServiceTest @Autowired constructor(
         val product = createDefaultProduct()
         val persistProduct = productRepository.save(product)
 
-        productCommandService.delete(persistProduct.id!!)
+        productCommandService.delete(persistProduct.id!!, UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root"))
 
         val deletedProduct = productRepository.findByIdOrThrow(persistProduct.id)
         assertThat(productRepository.count()).isEqualTo(1)

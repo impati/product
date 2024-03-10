@@ -5,23 +5,30 @@ Content-Type: application/json
 {
   "name": "foo",
   "price": 1000,
-  "quantity": 1
+  "quantity": 1,
+  "memberNumber": "0000"
 }
 
 ### 상품 조회
-GET http://localhost:8080/v1/products/70
+GET http://localhost:8080/v1/products/46
 Content-Type: application/json
 
 ### 상품 수정
-PUT http://localhost:8080/v1/products/70
+PUT http://localhost:8080/v1/products/46
 Content-Type: application/json
 
 {
   "name": "foo-bar",
   "price": 10000,
   "quantity": 10,
-  "status": "STOP"
+  "status": "STOP",
+  "memberNumber": "0000"
 }
 
 ### 상품 삭제
-DELETE http://localhost:8080/v1/products/70
+DELETE http://localhost:8080/v1/products/46
+Content-Type: application/json
+
+{
+  "memberNumber": "0000"
+}

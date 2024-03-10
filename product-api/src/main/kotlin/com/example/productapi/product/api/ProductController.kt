@@ -1,9 +1,12 @@
-package com.example.productapi.product.controller
+package com.example.productapi.product.api
 
-import com.example.productapi.product.controller.request.ProductCreateRequest
-import com.example.productapi.product.controller.request.ProductEditRequest
-import com.example.productapi.product.controller.response.ProductResponse
-import com.example.productdomain.product.application.ProductCommandService
+import com.example.productapi.product.api.request.ProductCreateRequest
+import com.example.productapi.product.api.request.ProductEditRequest
+import com.example.productapi.product.api.request.ProductRequest
+import com.example.productapi.product.api.response.ProductResponse
+import com.example.productapi.product.application.ProductApplication
+import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductQueryService
 import jakarta.validation.Valid
 import lombok.extern.slf4j.Slf4j
@@ -11,19 +14,20 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.net.URI
+import java.time.LocalDateTime.now
 
 @Slf4j
 @RestController
 class ProductController(
-    val productCommandService: ProductCommandService,
+    val productApplication: ProductApplication,
     val productQueryService: ProductQueryService
 ) {
 
     @PostMapping("/v1/products")
     fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ResponseEntity<Unit> {
-        val productId = productCommandService.create(request.toInput()).id
+        val productId = productApplication.createProduct(request, CreatedAudit(now(), request.memberNumber))
 
-        return ResponseEntity.created(getUri(productId!!)).build()
+        return ResponseEntity.created(getUri(productId)).build()
     }
 
     @GetMapping("/v1/products/{productId}")
@@ -38,14 +42,21 @@ class ProductController(
         @PathVariable productId: Long,
         @Valid @RequestBody request: ProductEditRequest
     ): ResponseEntity<ProductResponse> {
-        val product = productCommandService.edit(productId, request.toInput())
-
-        return ResponseEntity.ok(ProductResponse.from(product))
+        return ResponseEntity.ok(
+            productApplication.editProduct(
+                productId,
+                request,
+                UpdatedAudit(now(), request.memberNumber)
+            )
+        )
     }
 
     @DeleteMapping("/v1/products/{productId}")
-    fun deleteProduct(@PathVariable productId: Long): ResponseEntity<Unit> {
-        productCommandService.delete(productId)
+    fun deleteProduct(
+        @PathVariable productId: Long,
+        @Valid @RequestBody request: ProductRequest
+    ): ResponseEntity<Unit> {
+        productApplication.deleteProduct(productId, UpdatedAudit(now(), request.memberNumber))
 
         return ResponseEntity.noContent().build()
     }

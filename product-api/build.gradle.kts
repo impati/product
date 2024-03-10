@@ -9,10 +9,12 @@ plugins {
 dependencies {
 
     implementation(project(":product-domain"))
+    implementation(project(":product-client"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
 }
 
 tasks.getByName<BootJar>("bootJar") {

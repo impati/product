@@ -16,7 +16,7 @@ class ProductQueryServiceTest @Autowired constructor(
     @Test
     @DisplayName("상품 ID 로 상품을 조회한다.")
     fun getProduct() {
-        val product = Product(ProductName("Test"), ProductPrice(100), ProductQuantity(10))
+        val product = createDefaultProduct()
         val persistentProduct = productRepository.save(product)
 
         val foundProduct = productQueryService.getProduct(persistentProduct.id!!)
@@ -25,9 +25,9 @@ class ProductQueryServiceTest @Autowired constructor(
             .extracting(Product::id, Product::name, Product::price, Product::quantity, Product::status)
             .contains(
                 persistentProduct.id,
-                ProductName("Test"),
-                ProductPrice(100),
-                ProductQuantity(10),
+                ProductName("test"),
+                ProductPrice(1000),
+                ProductQuantity(100),
                 ProductStatus.PRE_REGISTRATION
             )
     }

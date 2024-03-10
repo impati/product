@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          permission-api:
+            connect-timeout: 2000
+            read-timeout: 2000
+            logger-level: full
+
+external:
+  permission:
+    prefix: "https://localhost:8000" # TODO 권한 API 완료 되면 변경
+    api-key: Bearer api-key

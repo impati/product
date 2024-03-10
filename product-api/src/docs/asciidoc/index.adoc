@@ -50,6 +50,7 @@ include::{snippets}/product/edit/response-fields.adoc[]
 
 include::{snippets}/product/delete/http-request.adoc[]
 include::{snippets}/product/delete/path-parameters.adoc[]
+include::{snippets}/product/delete/request-fields.adoc[]
 
 === 응답
 

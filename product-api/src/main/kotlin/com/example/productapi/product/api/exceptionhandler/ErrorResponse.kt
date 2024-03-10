@@ -1,4 +1,4 @@
-package com.example.productapi.product.exceptionhandler
+package com.example.productapi.product.api.exceptionhandler
 
 class ErrorResponse(
     val statusCode: String,
