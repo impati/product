@@ -1,4 +1,4 @@
-= API 문서
+= 상품 어드민 API 문서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -55,3 +55,15 @@ include::{snippets}/product/delete/request-fields.adoc[]
 === 응답
 
 include::{snippets}/product/delete/http-response.adoc[]
+
+== 상품 히스토리 조회
+
+=== 요청
+
+include::{snippets}/product/product-histories/http-request.adoc[]
+include::{snippets}/product/product-histories/path-parameters.adoc[]
+include::{snippets}/product/product-histories/request-fields.adoc[]
+
+=== 응답
+
+include::{snippets}/product/product-histories/http-response.adoc[]
