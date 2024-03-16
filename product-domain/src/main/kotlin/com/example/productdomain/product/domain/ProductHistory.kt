@@ -18,9 +18,8 @@ class ProductHistory(
     @Column(name = "status")
     val status: ProductStatus,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    val product: Product,
+    @Column(name = "product_id")
+    val productId: Long,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ class ProductHistory(
                 product.name.value,
                 product.price.value,
                 product.status,
-                product
+                product.id!!
             )
         }
     }

@@ -2,10 +2,7 @@ package com.example.productdomain.product
 
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
-import com.example.productdomain.product.domain.Product
-import com.example.productdomain.product.domain.ProductName
-import com.example.productdomain.product.domain.ProductPrice
-import com.example.productdomain.product.domain.ProductQuantity
+import com.example.productdomain.product.domain.*
 import java.time.LocalDateTime
 
 fun createDefaultProduct(): Product {
@@ -17,6 +14,8 @@ fun createDefaultProduct(): Product {
         UpdatedAudit(now, memberNumber),
         ProductName("test"),
         ProductPrice(1000),
-        ProductQuantity(100)
+        ProductQuantity(100),
+        ProductStatus.PRE_REGISTRATION,
+        0L
     )
 }

@@ -40,7 +40,7 @@ class ProductCommandServiceTest @Autowired constructor(
 
         val product = productCommandService.create(input)
 
-        val history = productHistoryRepository.findByProduct(product)
+        val history = productHistoryRepository.findByProductId(product.id!!)[0]
         assertThat(history.id).isNotNull()
         assertThat(history)
             .extracting(
@@ -83,7 +83,7 @@ class ProductCommandServiceTest @Autowired constructor(
             UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
         );
 
-        val history = productHistoryRepository.findByProduct(afterProduct)
+        val history = productHistoryRepository.findByProductId(afterProduct.id!!)[0]
         assertThat(history.id).isNotNull()
         assertThat(history)
             .extracting(
@@ -121,7 +121,7 @@ class ProductCommandServiceTest @Autowired constructor(
 
         productCommandService.delete(persistProduct.id!!, UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root"))
 
-        val history = productHistoryRepository.findByProduct(product)
+        val history = productHistoryRepository.findByProductId(product.id!!)[0]
         assertThat(history.id).isNotNull()
         assertThat(history)
             .extracting(

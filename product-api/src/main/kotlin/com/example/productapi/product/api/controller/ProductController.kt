@@ -1,4 +1,4 @@
-package com.example.productapi.product.api
+package com.example.productapi.product.api.controller
 
 import com.example.productapi.product.api.request.ProductCreateRequest
 import com.example.productapi.product.api.request.ProductEditRequest

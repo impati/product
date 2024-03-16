@@ -23,14 +23,14 @@ class ProductHistoryTest {
                 ProductHistory::name,
                 ProductHistory::price,
                 ProductHistory::status,
-                ProductHistory::product
+                ProductHistory::productId
             )
             .contains(
                 CreatedAudit(product.updatedAudit.updatedAt, product.updatedAudit.updatedBy),
                 product.name.value,
                 product.price.value,
                 product.status,
-                product
+                product.id
             )
     }
 
@@ -54,7 +54,7 @@ class ProductHistoryTest {
                 ProductHistory::name,
                 ProductHistory::price,
                 ProductHistory::status,
-                ProductHistory::product
+                ProductHistory::productId
             )
             .contains(
                 CreatedAudit(LocalDateTime.of(2024, 3, 16, 0, 0), "root"),
@@ -62,7 +62,7 @@ class ProductHistoryTest {
                 1000000,
                 1000000,
                 ProductStatus.SELLING,
-                product
+                product.id
             )
     }
 
@@ -80,14 +80,14 @@ class ProductHistoryTest {
                 ProductHistory::name,
                 ProductHistory::price,
                 ProductHistory::status,
-                ProductHistory::product
+                ProductHistory::productId
             )
             .contains(
                 CreatedAudit(LocalDateTime.of(2024, 3, 15, 0, 0), "root"),
                 "test",
                 1000,
                 ProductStatus.DELETED,
-                product
+                product.id
             )
     }
 }

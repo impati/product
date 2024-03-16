@@ -1,5 +1,6 @@
 package com.example.productapi.product.api
 
+import com.example.productapi.product.api.controller.ProductController
 import com.example.productapi.product.api.request.ProductCreateRequest
 import com.example.productapi.product.api.request.ProductEditRequest
 import com.example.productapi.product.api.request.ProductRequest
