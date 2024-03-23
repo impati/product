@@ -44,6 +44,7 @@ class Product(
         quantity: Int,
         status: ProductStatus
     ) {
+        require(this.status != ProductStatus.DELETED) { "상품이 이미 삭제되어 변경할 수 없습니다." }
         this.name = ProductName(name)
         this.price = ProductPrice(price)
         this.quantity = ProductQuantity(quantity)
