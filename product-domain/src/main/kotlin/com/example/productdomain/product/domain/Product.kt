@@ -3,10 +3,12 @@ package com.example.productdomain.product.domain
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 
 
 @Entity
 @Table(name = "products")
+@SQLRestriction(value = "status <>  'DELETED'")
 class Product(
 
     @Embedded
