@@ -7,7 +7,12 @@ import org.hibernate.annotations.SQLRestriction
 
 
 @Entity
-@Table(name = "products")
+@Table(
+    name = "products",
+    indexes = [
+        Index(name = "idx__status", columnList = "status")
+    ]
+)
 @SQLRestriction(value = "status <>  'DELETED'")
 class Product(
 
