@@ -9,6 +9,7 @@ import com.example.productdomain.product.createDefaultProduct
 import com.example.productdomain.product.domain.*
 import com.example.productdomain.util.findByIdOrThrow
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -108,9 +109,9 @@ class ProductCommandServiceTest @Autowired constructor(
 
         productCommandService.delete(persistProduct.id!!, UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root"))
 
-        val deletedProduct = productRepository.findByIdOrThrow(persistProduct.id)
-        assertThat(productRepository.count()).isEqualTo(1)
-        assertThat(deletedProduct.status).isEqualTo(ProductStatus.DELETED)
+        assertThatThrownBy { productRepository.findByIdOrThrow(persistProduct.id) }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessage("찾고자하는 엔티티를 찾지 못했습니다.")
     }
 
     @Test

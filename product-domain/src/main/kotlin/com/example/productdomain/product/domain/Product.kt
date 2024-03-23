@@ -3,10 +3,17 @@ package com.example.productdomain.product.domain
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 
 
 @Entity
-@Table(name = "products")
+@Table(
+    name = "products",
+    indexes = [
+        Index(name = "idx__status", columnList = "status")
+    ]
+)
+@SQLRestriction(value = "status <>  'DELETED'")
 class Product(
 
     @Embedded
@@ -44,6 +51,7 @@ class Product(
         quantity: Int,
         status: ProductStatus
     ) {
+        require(this.status != ProductStatus.DELETED) { "상품이 이미 삭제되어 변경할 수 없습니다." }
         this.name = ProductName(name)
         this.price = ProductPrice(price)
         this.quantity = ProductQuantity(quantity)

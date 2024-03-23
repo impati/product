@@ -19,3 +19,20 @@ fun createDefaultProduct(): Product {
         0L
     )
 }
+
+fun createDefaultProduct(
+    productStatus: ProductStatus = ProductStatus.PRE_REGISTRATION
+): Product {
+    val memberNumber = "default"
+    val now = LocalDateTime.of(2024, 3, 9, 0, 0)
+
+    return Product(
+        CreatedAudit(now, memberNumber),
+        UpdatedAudit(now, memberNumber),
+        ProductName("test"),
+        ProductPrice(1000),
+        ProductQuantity(100),
+        productStatus,
+        0L
+    )
+}

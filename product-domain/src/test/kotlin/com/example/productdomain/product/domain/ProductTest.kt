@@ -152,4 +152,23 @@ class ProductTest {
         assertThat(product.status).isEqualTo(ProductStatus.DELETED)
         assertThat(product.updatedAudit).isEqualTo(UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root"))
     }
+
+    @Test
+    @DisplayName("상품을 업데이트하는데 상품의 상태가 DELETE 라면 업데이트 할 수 없다.")
+    fun updateFailWhenDelete() {
+        val product = createDefaultProduct(ProductStatus.DELETED)
+        val audit = UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
+
+        assertThatThrownBy {
+            product.update(
+                audit,
+                "other",
+                100000,
+                10000,
+                ProductStatus.STOP
+            )
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessage("상품이 이미 삭제되어 변경할 수 없습니다.")
+    }
 }
