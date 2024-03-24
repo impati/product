@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
+import kotlin.concurrent.thread
 
 class ProductCommandServiceTest @Autowired constructor(
     val productCommandService: ProductCommandService
@@ -70,6 +71,27 @@ class ProductCommandServiceTest @Autowired constructor(
         assertThat(afterProduct)
             .extracting(Product::name, Product::price, Product::quantity, Product::status)
             .contains(ProductName("test2"), ProductPrice(100), ProductQuantity(10000), ProductStatus.SELLING);
+    }
+
+    @Test
+    @DisplayName("상품을 동시에 수정하면 첫 번째 수정만 반영되고 이후 수정은 실패한다.")
+    fun editConcurrency() {
+        val beforeProduct = productRepository.save(createDefaultProduct())
+
+        val threads = List(10) { it ->
+            thread(start = true) {
+                productCommandService.edit(
+                    beforeProduct.id!!,
+                    ProductEditInput("test$it", 100, 10000, ProductStatus.SELLING),
+                    UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
+                )
+            }
+        }
+        threads.forEach { it.join() }
+
+
+        val afterProduct = productRepository.findByIdOrThrow(beforeProduct.id)
+        assertThat(afterProduct.version).isEqualTo(1L)
     }
 
     @Test
