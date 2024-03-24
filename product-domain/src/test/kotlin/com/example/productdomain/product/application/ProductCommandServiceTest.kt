@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
+import kotlin.concurrent.thread
 
 class ProductCommandServiceTest @Autowired constructor(
     val productCommandService: ProductCommandService
@@ -57,7 +58,7 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 정보를 수정한다.")
     fun edit() {
         val beforeProduct = productRepository.save(createDefaultProduct())
-        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING)
+        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, 0)
 
         productCommandService.edit(
             beforeProduct.id!!,
@@ -73,10 +74,31 @@ class ProductCommandServiceTest @Autowired constructor(
     }
 
     @Test
+    @DisplayName("상품을 동시에 수정하면 첫 번째 수정만 반영되고 이후 수정은 실패한다.")
+    fun editConcurrency() {
+        val beforeProduct = productRepository.save(createDefaultProduct())
+
+        val threads = List(3) { it ->
+            thread(start = true) {
+                productCommandService.edit(
+                    beforeProduct.id!!,
+                    ProductEditInput("test$it", 100, 10000, ProductStatus.SELLING, 0),
+                    UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
+                )
+            }
+        }
+        threads.forEach { it.join() }
+
+
+        val afterProduct = productRepository.findByIdOrThrow(beforeProduct.id)
+        assertThat(afterProduct.version).isEqualTo(1L)
+    }
+
+    @Test
     @DisplayName("상품 수정시 히스토리도 생성한다.")
     fun editHistory() {
         val beforeProduct = productRepository.save(createDefaultProduct())
-        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING)
+        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, 0)
 
         val afterProduct = productCommandService.edit(
             beforeProduct.id!!,

@@ -24,7 +24,10 @@ data class ProductEditRequest(
     val status: ProductStatus,
 
     @field:NotBlank
-    val memberNumber: String
+    val memberNumber: String,
+
+    @field:NotNull
+    val version: Long
 ) {
 
     fun toInput(): ProductEditInput {
@@ -32,7 +35,8 @@ data class ProductEditRequest(
             name,
             price,
             quantity,
-            status
+            status,
+            version
         )
     }
 }

@@ -41,7 +41,10 @@ class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    val id: Long? = null
+    val id: Long? = null,
+
+    @Version
+    var version: Long = 0L,
 ) {
 
     fun update(

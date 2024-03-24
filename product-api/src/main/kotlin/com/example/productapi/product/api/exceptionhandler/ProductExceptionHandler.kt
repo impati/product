@@ -1,5 +1,6 @@
 package com.example.productapi.product.api.exceptionhandler
 
+import com.example.productdomain.product.exception.ProductOptimisticException
 import lombok.extern.slf4j.Slf4j
 import org.springframework.http.HttpStatus
 
@@ -28,5 +29,12 @@ class ProductExceptionHandler {
 
         return ResponseEntity.badRequest()
             .body(ErrorResponse(HttpStatus.BAD_REQUEST.name, exception.message ?: errorMessage))
+    }
+
+    @ExceptionHandler(ProductOptimisticException::class)
+    fun handleOptimisticLockingFailureExceptions(exception: ProductOptimisticException): ResponseEntity<ErrorResponse> {
+
+        return ResponseEntity.badRequest()
+            .body(ErrorResponse(HttpStatus.BAD_REQUEST.name, exception.message))
     }
 }

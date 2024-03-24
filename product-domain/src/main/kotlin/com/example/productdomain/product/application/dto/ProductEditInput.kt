@@ -6,7 +6,8 @@ data class ProductEditInput(
     val name: String,
     val price: Int,
     val quantity: Int,
-    val status: ProductStatus
+    val status: ProductStatus,
+    val version: Long
 ) {
 
 }

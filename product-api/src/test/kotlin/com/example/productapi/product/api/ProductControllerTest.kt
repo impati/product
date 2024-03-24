@@ -124,7 +124,8 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
-                        fieldWithPath("status").description("상품 상태")
+                        fieldWithPath("status").description("상품 상태"),
+                        fieldWithPath("version").description("상품 수정 버전")
                     )
                 )
             )
@@ -135,7 +136,7 @@ class ProductControllerTest @Autowired constructor(
     fun editProduct() {
         val productId = 1L
         val now = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val request = ProductEditRequest("test", 1000, 10, ProductStatus.STOP, "0000")
+        val request = ProductEditRequest("test", 1000, 10, ProductStatus.STOP, "0000", 0)
         val product = Product(
             CreatedAudit(now, "0000"),
             UpdatedAudit(now, "0000"),
@@ -168,14 +169,16 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
                         fieldWithPath("status").description("상품 상태"),
-                        fieldWithPath("memberNumber").description("멤버 번호")
+                        fieldWithPath("memberNumber").description("멤버 번호"),
+                        fieldWithPath("version").description("상품 수정 버전"),
                     ),
                     responseFields(
                         fieldWithPath("productId").description("상품 ID"),
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
-                        fieldWithPath("status").description("상품 상태")
+                        fieldWithPath("status").description("상품 상태"),
+                        fieldWithPath("version").description("상품 수정 버전")
                     )
                 )
             )

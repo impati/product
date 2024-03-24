@@ -8,7 +8,8 @@ class ProductResponse(
     val name: String,
     val price: Int,
     val quantity: Int,
-    val status: ProductStatus
+    val status: ProductStatus,
+    val version: Long
 ) {
 
     companion object {
@@ -18,7 +19,8 @@ class ProductResponse(
                 product.name.value,
                 product.price.value,
                 product.quantity.value,
-                product.status
+                product.status,
+                product.version
             )
         }
     }
