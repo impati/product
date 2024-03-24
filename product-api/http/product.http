@@ -10,22 +10,23 @@ Content-Type: application/json
 }
 
 ### 상품 조회
-GET http://localhost:8080/v1/products/72
+GET http://localhost:8080/v1/products/82
 
 ### 상품 수정
-PUT http://localhost:8080/v1/products/72
+PUT http://localhost:8080/v1/products/82
 Content-Type: application/json
 
 {
   "name": "foo-bar",
   "price": 10000,
   "quantity": 10,
-  "status": "SOLD_OUT",
-  "memberNumber": "0000"
+  "status": "STOP",
+  "memberNumber": "0000",
+  "version": 3
 }
 
 ### 상품 삭제
-DELETE http://localhost:8080/v1/products/72
+DELETE http://localhost:8080/v1/products/82
 Content-Type: application/json
 
 {
@@ -33,4 +34,4 @@ Content-Type: application/json
 }
 
 ### 상품 히스토리 조회
-GET http://localhost:8080/v1/products/72/histories
+GET http://localhost:8080/v1/products/82/histories
