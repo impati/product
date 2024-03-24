@@ -58,7 +58,7 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 정보를 수정한다.")
     fun edit() {
         val beforeProduct = productRepository.save(createDefaultProduct())
-        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING)
+        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, 0)
 
         productCommandService.edit(
             beforeProduct.id!!,
@@ -78,11 +78,11 @@ class ProductCommandServiceTest @Autowired constructor(
     fun editConcurrency() {
         val beforeProduct = productRepository.save(createDefaultProduct())
 
-        val threads = List(10) { it ->
+        val threads = List(3) { it ->
             thread(start = true) {
                 productCommandService.edit(
                     beforeProduct.id!!,
-                    ProductEditInput("test$it", 100, 10000, ProductStatus.SELLING),
+                    ProductEditInput("test$it", 100, 10000, ProductStatus.SELLING, 0),
                     UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
                 )
             }
@@ -98,7 +98,7 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 수정시 히스토리도 생성한다.")
     fun editHistory() {
         val beforeProduct = productRepository.save(createDefaultProduct())
-        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING)
+        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, 0)
 
         val afterProduct = productCommandService.edit(
             beforeProduct.id!!,

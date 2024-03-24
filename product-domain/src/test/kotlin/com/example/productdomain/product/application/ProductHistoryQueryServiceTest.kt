@@ -28,7 +28,7 @@ class ProductHistoryQueryServiceTest @Autowired constructor(
             CreatedAudit(now, "0000"),
             UpdatedAudit(now, "0000")
         )
-        val editInput = ProductEditInput("test2", 1000, 100, ProductStatus.SELLING)
+        val editInput = ProductEditInput("test2", 1000, 100, ProductStatus.SELLING, 0)
         val product = productCommandService.create(createInput)
         productCommandService.edit(product.id!!, editInput, UpdatedAudit(now.plusDays(1), "0000"))
         productCommandService.delete(product.id!!, UpdatedAudit(now.plusDays(2), "0000"))
