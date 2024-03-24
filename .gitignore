@@ -65,3 +65,5 @@ hs_err_pid*
 replay_pid*
 
 ### CUSTOM ###
+docker/mysql_data
+**/static/docs

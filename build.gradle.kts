@@ -42,6 +42,12 @@ subprojects {
         plugin("kotlin-allopen")
         plugin("jacoco")
     }
+    
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.0")
+        }
+    }
 
     dependencies {
 
@@ -52,6 +58,7 @@ subprojects {
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
@@ -86,14 +93,6 @@ subprojects {
                 "${projectDir}/build/reports/jacoco/test/jacocoTestReport.xml"
             )
         }
-    }
-
-    tasks.getByName<BootJar>("bootJar") {
-        enabled = false
-    }
-
-    tasks.getByName<Jar>("jar") {
-        enabled = true
     }
 
     tasks.withType<Test> {
