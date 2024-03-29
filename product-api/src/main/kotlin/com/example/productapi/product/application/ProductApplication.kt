@@ -18,13 +18,15 @@ class ProductApplication(
 ) {
 
     fun createProduct(request: ProductCreateRequest, createdAudit: CreatedAudit): Long {
-        validatePermission(productPermissionProperties.createPermissionId, createdAudit.createdBy)
+        require(productAdaptor.hasPermission(productPermissionProperties.createPermissionId, createdAudit.createdBy))
+        { "사용자가 상품 생성 권한을 가지고 있지 않습니다: 멤버번호 ${createdAudit.createdBy}" }
 
         return productCommandService.create(request.toInput(createdAudit)).id!!
     }
 
     fun editProduct(productId: Long, request: ProductEditRequest, updatedAudit: UpdatedAudit): ProductResponse {
-        validatePermission(productPermissionProperties.editPermissionId, updatedAudit.updatedBy)
+        require(productAdaptor.hasPermission(productPermissionProperties.editPermissionId, updatedAudit.updatedBy))
+        { "사용자가 상품 수정 권한을 가지고 있지 않습니다: 멤버번호 ${updatedAudit.updatedBy}" }
 
         val product = productCommandService.edit(productId, request.toInput(), updatedAudit)
 
@@ -32,13 +34,9 @@ class ProductApplication(
     }
 
     fun deleteProduct(productId: Long, updatedAudit: UpdatedAudit) {
-        validatePermission(productPermissionProperties.deletePermissionId, updatedAudit.updatedBy)
+        require(productAdaptor.hasPermission(productPermissionProperties.deletePermissionId, updatedAudit.updatedBy))
+        { "사용자가 상품 삭제 권한을 가지고 있지 않습니다: 멤버번호 ${updatedAudit.updatedBy}" }
 
         productCommandService.delete(productId, updatedAudit)
-    }
-
-    private fun validatePermission(permissionId: Long, memberNumber: String) {
-        require(productAdaptor.hasPermission(permissionId, memberNumber))
-        { "사용자가 상품 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber" }
     }
 }
