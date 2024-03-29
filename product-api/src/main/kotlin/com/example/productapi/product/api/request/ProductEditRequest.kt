@@ -14,11 +14,13 @@ data class ProductEditRequest(
 
     @field:Min(0)
     @field:Max(10_000_000_000)
-    val price: Int,
+    @field:NotNull
+    val price: Int?,
 
     @field:Min(0)
     @field:Max(10_000_000_000)
-    val quantity: Int,
+    @field:NotNull
+    val quantity: Int?,
 
     @field:NotNull
     val status: ProductStatus,
@@ -27,16 +29,16 @@ data class ProductEditRequest(
     val memberNumber: String,
 
     @field:NotNull
-    val version: Long
+    val version: Long?
 ) {
 
     fun toInput(): ProductEditInput {
         return ProductEditInput(
             name,
-            price,
-            quantity,
+            price!!,
+            quantity!!,
             status,
-            version
+            version!!
         )
     }
 }
