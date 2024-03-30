@@ -3,6 +3,7 @@ package com.example.productdomain.product.domain
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.createDefaultProduct
+import com.example.productdomain.product.exception.ProductOptimisticException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -170,5 +171,15 @@ class ProductTest {
         }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("상품이 이미 삭제되어 변경할 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("상품의 버전이 맞지 않는 경우 ProductOptimisticException 를 throw 한다.")
+    fun checkVersion() {
+        val product = createDefaultProduct(ProductStatus.DELETED)
+
+        assertThatThrownBy { product.checkVersion(2L) }
+            .isInstanceOf(ProductOptimisticException::class.java)
+            .hasMessage("수정에 실패했습니다. 다시 시도해주세요.")
     }
 }

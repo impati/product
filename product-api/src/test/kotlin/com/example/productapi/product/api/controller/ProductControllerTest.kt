@@ -1,6 +1,6 @@
-package com.example.productapi.product.api
+package com.example.productapi.product.api.controller
 
-import com.example.productapi.product.api.controller.ProductController
+import com.example.productapi.product.api.controller.RestDocsUtils.Companion.prettyDocument
 import com.example.productapi.product.api.request.ProductCreateRequest
 import com.example.productapi.product.api.request.ProductEditRequest
 import com.example.productapi.product.api.request.ProductRequest
@@ -23,11 +23,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationExtension
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
-import org.springframework.restdocs.operation.preprocess.Preprocessors
-import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
-import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
@@ -79,10 +75,8 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(handler().methodName("createProduct"))
             .andExpect(header().string("Location", "http://api.test.com:8080/v1/products/" + product.id))
             .andDo(
-                document(
+                prettyDocument(
                     "product/create",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     requestFields(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
@@ -114,10 +108,8 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(handler().methodName("getProduct"))
             .andExpect(content().string(objectMapper.writeValueAsString(ProductResponse.from(product))))
             .andDo(
-                document(
+                prettyDocument(
                     "product/get",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     pathParameters(parameterWithName("productId").description("상품 ID")),
                     responseFields(
                         fieldWithPath("productId").description("상품 ID"),
@@ -159,10 +151,8 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(handler().methodName("editProduct"))
             .andExpect(content().string(objectMapper.writeValueAsString(ProductResponse.from(product))))
             .andDo(
-                document(
+                prettyDocument(
                     "product/edit",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     pathParameters(parameterWithName("productId").description("상품 ID")),
                     requestFields(
                         fieldWithPath("name").description("상품 이름"),
@@ -201,10 +191,8 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(status().isNoContent)
             .andExpect(handler().methodName("deleteProduct"))
             .andDo(
-                document(
+                prettyDocument(
                     "product/delete",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     pathParameters(parameterWithName("productId").description("상품 ID")),
                     requestFields(
                         fieldWithPath("memberNumber").description("멤버 번호")

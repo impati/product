@@ -2,6 +2,7 @@ package com.example.productdomain.product.domain
 
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
+import com.example.productdomain.product.exception.ProductOptimisticException
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLRestriction
 
@@ -65,5 +66,11 @@ class Product(
     fun delete(updatedAudit: UpdatedAudit) {
         this.status = ProductStatus.DELETED
         this.updatedAudit = updatedAudit
+    }
+
+    fun checkVersion(version: Long) {
+        require(this.version == version) {
+            throw ProductOptimisticException("수정에 실패했습니다. 다시 시도해주세요.")
+        }
     }
 }

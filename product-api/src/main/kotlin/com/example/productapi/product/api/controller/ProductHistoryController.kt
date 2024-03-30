@@ -17,7 +17,7 @@ class ProductHistoryController(
     fun getProductHistories(@PathVariable productId: Long): List<ProductHistoryResponse> {
 
         return productHistoryQueryService.getProductHistories(productId)
-            .map { ProductHistoryResponse.from(it) }
+            .map(ProductHistoryResponse::from)
             .toList()
     }
 }

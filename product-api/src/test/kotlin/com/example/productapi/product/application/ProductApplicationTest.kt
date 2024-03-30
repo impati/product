@@ -39,7 +39,7 @@ class ProductApplicationTest @Autowired constructor(
 
         assertThatThrownBy { productApplication.createProduct(request, createdAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessageContaining("사용자가 상품 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
+            .hasMessageContaining("사용자가 상품 생성 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
     }
 
     @Test
@@ -82,7 +82,7 @@ class ProductApplicationTest @Autowired constructor(
 
         assertThatThrownBy { productApplication.editProduct(1L, request, updateAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessageContaining("사용자가 상품 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
+            .hasMessageContaining("사용자가 상품 수정 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
     }
 
     @Test
@@ -108,6 +108,6 @@ class ProductApplicationTest @Autowired constructor(
 
         assertThatThrownBy { productApplication.deleteProduct(1L, updateAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessageContaining("사용자가 상품 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
+            .hasMessageContaining("사용자가 상품 삭제 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
     }
 }

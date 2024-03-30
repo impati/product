@@ -42,13 +42,9 @@ class ProductController(
         @PathVariable productId: Long,
         @Valid @RequestBody request: ProductEditRequest
     ): ResponseEntity<ProductResponse> {
-        return ResponseEntity.ok(
-            productApplication.editProduct(
-                productId,
-                request,
-                UpdatedAudit(now(), request.memberNumber)
-            )
-        )
+        val product = productApplication.editProduct(productId, request, UpdatedAudit(now(), request.memberNumber))
+
+        return ResponseEntity.ok(product)
     }
 
     @DeleteMapping("/v1/products/{productId}")
