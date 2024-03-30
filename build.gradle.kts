@@ -42,7 +42,7 @@ subprojects {
         plugin("kotlin-allopen")
         plugin("jacoco")
     }
-    
+
     dependencyManagement {
         imports {
             mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.0")
@@ -53,6 +53,8 @@ subprojects {
 
         compileOnly("org.projectlombok:lombok")
         annotationProcessor("org.projectlombok:lombok")
+
+        compileOnly("io.github.oshai:kotlin-logging-jvm:4.0.0")
 
         implementation("org.springframework.boot:spring-boot-starter")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
