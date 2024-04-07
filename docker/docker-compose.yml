@@ -8,5 +8,27 @@ services:
       MYSQL_USER: impati              # 데이터베이스 사용자
       MYSQL_PASSWORD: impati       # 사용자 비밀번호
       MYSQL_ROOT_PASSWORD: 123  # 루트 비밀번호
+    volumes:
+      - ./mysql_data:/var/lib/mysql
     ports:
       - '3306:3306'  # 포트 매핑 (호스트:컨테이너)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - ./es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.2
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"

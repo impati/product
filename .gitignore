@@ -66,4 +66,6 @@ replay_pid*
 
 ### CUSTOM ###
 docker/mysql_data
+docker/es_data
 **/static/docs
+
