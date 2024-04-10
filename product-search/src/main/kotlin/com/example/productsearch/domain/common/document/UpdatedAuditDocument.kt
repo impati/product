@@ -1,4 +1,4 @@
-package com.example.productsearch.product
+package com.example.productsearch.domain.common.document
 
 import lombok.Getter
 import org.springframework.data.elasticsearch.annotations.Field

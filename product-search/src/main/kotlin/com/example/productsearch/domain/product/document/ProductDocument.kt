@@ -1,6 +1,8 @@
-package com.example.productsearch.product
+package com.example.productsearch.domain.product.document
 
 import com.example.productdomain.product.domain.ProductStatus
+import com.example.productsearch.domain.common.document.CreatedAuditDocument
+import com.example.productsearch.domain.common.document.UpdatedAuditDocument
 import lombok.Getter
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.Document
@@ -12,10 +14,11 @@ import org.springframework.data.elasticsearch.annotations.FieldType
 data class ProductDocument(
 
     @Id
+    @Field(type = FieldType.Long)
     val productId: Long,
 
     @Field(type = FieldType.Text)
-    val productName: String,
+    val name: String,
 
     @Field(type = FieldType.Object)
     val createdAudit: CreatedAuditDocument,

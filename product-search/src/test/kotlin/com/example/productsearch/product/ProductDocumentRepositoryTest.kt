@@ -1,6 +1,10 @@
 package com.example.productsearch.product
 
 import com.example.productdomain.product.domain.ProductStatus
+import com.example.productsearch.domain.common.document.CreatedAuditDocument
+import com.example.productsearch.domain.common.document.UpdatedAuditDocument
+import com.example.productsearch.domain.product.document.ProductDocument
+import com.example.productsearch.domain.product.repository.ProductDocumentRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +33,7 @@ class ProductDocumentRepositoryTest @Autowired constructor(
         assertThat(indexedDocument)
             .extracting(
                 ProductDocument::productId,
-                ProductDocument::productName,
+                ProductDocument::name,
                 ProductDocument::createdAudit,
                 ProductDocument::updatedAudit,
                 ProductDocument::price,
