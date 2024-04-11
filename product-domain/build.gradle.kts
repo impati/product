@@ -15,6 +15,8 @@ buildscript {
 
 
 dependencies {
+    implementation(project(":product-common"))
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.flywaydb:flyway-core")
     runtimeOnly("com.h2database:h2")
