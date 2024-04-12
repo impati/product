@@ -11,7 +11,7 @@ import com.example.productdomain.product.application.ProductCommandService
 import org.springframework.stereotype.Service
 
 @Service
-class ProductApplication(
+class ProductFacade(
     val productCommandService: ProductCommandService,
     val productPermissionProperties: ProductPermissionProperties,
     val productAdaptor: PermissionAdaptor

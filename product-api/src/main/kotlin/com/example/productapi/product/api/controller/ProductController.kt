@@ -4,7 +4,7 @@ import com.example.productapi.product.api.request.ProductCreateRequest
 import com.example.productapi.product.api.request.ProductEditRequest
 import com.example.productapi.product.api.request.ProductRequest
 import com.example.productapi.product.api.response.ProductResponse
-import com.example.productapi.product.application.ProductApplication
+import com.example.productapi.product.application.ProductFacade
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductQueryService
@@ -19,13 +19,13 @@ import java.time.LocalDateTime.now
 @Slf4j
 @RestController
 class ProductController(
-    val productApplication: ProductApplication,
+    val productFacade: ProductFacade,
     val productQueryService: ProductQueryService
 ) {
 
     @PostMapping("/v1/products")
     fun createProduct(@Valid @RequestBody request: ProductCreateRequest): ResponseEntity<Unit> {
-        val productId = productApplication.createProduct(request, CreatedAudit(now(), request.memberNumber))
+        val productId = productFacade.createProduct(request, CreatedAudit(now(), request.memberNumber))
 
         return ResponseEntity.created(getUri(productId)).build()
     }
@@ -42,7 +42,7 @@ class ProductController(
         @PathVariable productId: Long,
         @Valid @RequestBody request: ProductEditRequest
     ): ResponseEntity<ProductResponse> {
-        val product = productApplication.editProduct(productId, request, UpdatedAudit(now(), request.memberNumber))
+        val product = productFacade.editProduct(productId, request, UpdatedAudit(now(), request.memberNumber))
 
         return ResponseEntity.ok(product)
     }
@@ -52,7 +52,7 @@ class ProductController(
         @PathVariable productId: Long,
         @Valid @RequestBody request: ProductRequest
     ): ResponseEntity<Unit> {
-        productApplication.deleteProduct(productId, UpdatedAudit(now(), request.memberNumber))
+        productFacade.deleteProduct(productId, UpdatedAudit(now(), request.memberNumber))
 
         return ResponseEntity.noContent().build()
     }

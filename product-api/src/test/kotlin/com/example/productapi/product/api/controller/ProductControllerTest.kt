@@ -5,7 +5,7 @@ import com.example.productapi.product.api.request.ProductCreateRequest
 import com.example.productapi.product.api.request.ProductEditRequest
 import com.example.productapi.product.api.request.ProductRequest
 import com.example.productapi.product.api.response.ProductResponse
-import com.example.productapi.product.application.ProductApplication
+import com.example.productapi.product.application.ProductFacade
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductQueryService
@@ -40,7 +40,7 @@ class ProductControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
 
     @MockkBean
-    val productApplication: ProductApplication,
+    val productFacade: ProductFacade,
 
     @MockkBean
     val productQueryService: ProductQueryService,
@@ -64,7 +64,7 @@ class ProductControllerTest @Autowired constructor(
             1L
         )
 
-        every { productApplication.createProduct(request, any(CreatedAudit::class)) } returns product.id!!
+        every { productFacade.createProduct(request, any(CreatedAudit::class)) } returns product.id!!
 
         mockMvc.perform(
             post("/v1/products")
@@ -139,7 +139,7 @@ class ProductControllerTest @Autowired constructor(
             productId
         )
         every {
-            productApplication.editProduct(productId, request, any(UpdatedAudit::class))
+            productFacade.editProduct(productId, request, any(UpdatedAudit::class))
         } returns (ProductResponse.from(product))
 
         mockMvc.perform(
@@ -180,7 +180,7 @@ class ProductControllerTest @Autowired constructor(
         val request = ProductRequest("0000")
 
         every {
-            productApplication.deleteProduct(productId, any(UpdatedAudit::class))
+            productFacade.deleteProduct(productId, any(UpdatedAudit::class))
         } just Runs
 
         mockMvc.perform(

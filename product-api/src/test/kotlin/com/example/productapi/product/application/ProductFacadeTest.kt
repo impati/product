@@ -14,8 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDateTime
 
 @SpringBootTest
-class ProductApplicationTest @Autowired constructor(
-    val productApplication: ProductApplication
+class ProductFacadeTest @Autowired constructor(
+    val productFacade: ProductFacade
 ) {
 
     @Test
@@ -25,7 +25,7 @@ class ProductApplicationTest @Autowired constructor(
         val createdAudit = CreatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
         val request = ProductCreateRequest("test", 1000, 1000, "0000")
 
-        val productId = productApplication.createProduct(request, createdAudit)
+        val productId = productFacade.createProduct(request, createdAudit)
 
         assertThat(productId).isNotNull()
     }
@@ -37,7 +37,7 @@ class ProductApplicationTest @Autowired constructor(
         val createdAudit = CreatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
         val request = ProductCreateRequest("test", 1000, 1000, "0000")
 
-        assertThatThrownBy { productApplication.createProduct(request, createdAudit) }
+        assertThatThrownBy { productFacade.createProduct(request, createdAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("사용자가 상품 생성 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
     }
@@ -47,14 +47,14 @@ class ProductApplicationTest @Autowired constructor(
     fun editProduct() {
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val productId = productApplication.createProduct(
+        val productId = productFacade.createProduct(
             ProductCreateRequest("test", 1000, 1000, "0000"),
             CreatedAudit(createdAt, memberNumber)
         )
         val updateAudit = UpdatedAudit(createdAt.plusDays(1), memberNumber)
         val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, "0000", 0)
 
-        val response = productApplication.editProduct(productId, request, updateAudit)
+        val response = productFacade.editProduct(productId, request, updateAudit)
 
         assertThat(response)
             .extracting(
@@ -80,7 +80,7 @@ class ProductApplicationTest @Autowired constructor(
         val updateAudit = UpdatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
         val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, memberNumber, 0)
 
-        assertThatThrownBy { productApplication.editProduct(1L, request, updateAudit) }
+        assertThatThrownBy { productFacade.editProduct(1L, request, updateAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("사용자가 상품 수정 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
     }
@@ -90,13 +90,13 @@ class ProductApplicationTest @Autowired constructor(
     fun deleteProduct() {
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val productId = productApplication.createProduct(
+        val productId = productFacade.createProduct(
             ProductCreateRequest("test", 1000, 1000, "0000"),
             CreatedAudit(createdAt, memberNumber)
         )
         val updateAudit = UpdatedAudit(createdAt.plusDays(1), memberNumber)
 
-        assertThatCode { productApplication.deleteProduct(productId, updateAudit) }
+        assertThatCode { productFacade.deleteProduct(productId, updateAudit) }
             .doesNotThrowAnyException()
     }
 
@@ -106,7 +106,7 @@ class ProductApplicationTest @Autowired constructor(
         val memberNumber = "9997"
         val updateAudit = UpdatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
 
-        assertThatThrownBy { productApplication.deleteProduct(1L, updateAudit) }
+        assertThatThrownBy { productFacade.deleteProduct(1L, updateAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("사용자가 상품 삭제 권한을 가지고 있지 않습니다: 멤버번호 $memberNumber")
     }
