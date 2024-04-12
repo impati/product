@@ -7,7 +7,7 @@ data class TextCondition(
 ) : Condition {
 
     override fun buildCriteria(fieldName: String): Criteria {
-        return Criteria(fieldName).contains(value)
+        return Criteria(fieldName).matches(value)
     }
 }
 
