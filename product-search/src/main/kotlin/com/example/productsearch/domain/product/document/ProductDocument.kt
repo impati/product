@@ -1,5 +1,6 @@
 package com.example.productsearch.domain.product.document
 
+import com.example.productdomain.product.domain.Product
 import com.example.productdomain.product.domain.ProductStatus
 import com.example.productsearch.domain.common.document.CreatedAuditDocument
 import com.example.productsearch.domain.common.document.UpdatedAuditDocument
@@ -35,4 +36,19 @@ data class ProductDocument(
     @Field(type = FieldType.Keyword)
     val status: ProductStatus
 ) {
+
+    companion object {
+
+        fun from(product: Product): ProductDocument {
+            return ProductDocument(
+                product.id!!,
+                product.name.value,
+                CreatedAuditDocument.from(product.createdAudit),
+                UpdatedAuditDocument.from(product.updatedAudit),
+                product.price.value,
+                product.quantity.value,
+                product.status
+            )
+        }
+    }
 }

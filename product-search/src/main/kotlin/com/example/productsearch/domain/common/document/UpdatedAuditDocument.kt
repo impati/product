@@ -1,5 +1,6 @@
 package com.example.productsearch.domain.common.document
 
+import com.example.productdomain.common.UpdatedAudit
 import lombok.Getter
 import org.springframework.data.elasticsearch.annotations.DateFormat
 import org.springframework.data.elasticsearch.annotations.Field
@@ -16,4 +17,15 @@ data class UpdatedAuditDocument(
     @Field(type = FieldType.Keyword)
     val updatedBy: String,
 ) {
+
+    companion object {
+
+        fun from(updatedAudit: UpdatedAudit): UpdatedAuditDocument {
+
+            return UpdatedAuditDocument(
+                updatedAudit.updatedAt,
+                updatedAudit.updatedBy
+            )
+        }
+    }
 }
