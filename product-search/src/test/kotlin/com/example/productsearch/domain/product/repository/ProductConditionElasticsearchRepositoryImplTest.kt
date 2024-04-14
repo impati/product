@@ -2,8 +2,8 @@ package com.example.productsearch.domain.product.repository
 
 import com.example.productdomain.product.domain.ProductStatus
 import com.example.productsearch.condition.DateCondition
-import com.example.productsearch.condition.IntCondition
 import com.example.productsearch.condition.KeywordCondition
+import com.example.productsearch.condition.NumberCondition
 import com.example.productsearch.condition.TextCondition
 import com.example.productsearch.condition.operator.DateOperator
 import com.example.productsearch.condition.operator.NumberOperator
@@ -29,14 +29,14 @@ class ProductConditionElasticsearchRepositoryImplTest @Autowired constructor(
     fun findProductDocumentCase1() {
         indexDefaultProductDocument()
         val productCondition = ProductCondition(
-            productId = IntCondition(1, NumberOperator.EQUAL),
+            productId = NumberCondition(1, NumberOperator.EQUAL),
             name = TextCondition("hello"),
             createdAudit = CreatedAuditCondition(
                 DateCondition.from(LocalDateTime.of(2024, 4, 9, 0, 0), DateOperator.AFTER),
                 KeywordCondition("root")
             ),
-            price = IntCondition(1000, NumberOperator.MORE_THAN_OR_EQUAL),
-            quantity = IntCondition(100, NumberOperator.LESS_THAN_OR_EQUAL),
+            price = NumberCondition(1000, NumberOperator.MORE_THAN_OR_EQUAL),
+            quantity = NumberCondition(100, NumberOperator.LESS_THAN_OR_EQUAL),
             status = KeywordCondition(ProductStatus.SELLING.name),
         )
 
@@ -54,8 +54,8 @@ class ProductConditionElasticsearchRepositoryImplTest @Autowired constructor(
                 KeywordCondition("root")
             ),
             name = TextCondition("hello world"),
-            price = IntCondition(10000, NumberOperator.LESS_THAN),
-            quantity = IntCondition(10, NumberOperator.MORE_THEN),
+            price = NumberCondition(10000, NumberOperator.LESS_THAN),
+            quantity = NumberCondition(10, NumberOperator.MORE_THEN),
         )
 
         val documents = productDocumentRepository.findProductDocument(productCondition)

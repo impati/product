@@ -1,7 +1,7 @@
 package com.example.productsearch.domain.product.condition
 
-import com.example.productsearch.condition.IntCondition
 import com.example.productsearch.condition.KeywordCondition
+import com.example.productsearch.condition.NumberCondition
 import com.example.productsearch.condition.TextCondition
 import com.example.productsearch.domain.common.condition.CreatedAuditCondition
 import com.example.productsearch.domain.common.condition.UpdatedAuditCondition
@@ -10,12 +10,12 @@ import org.springframework.data.elasticsearch.core.query.Criteria
 
 @Getter
 data class ProductCondition(
-    val productId: IntCondition? = null,
+    val productId: NumberCondition? = null,
     val name: TextCondition? = null,
     val createdAudit: CreatedAuditCondition? = null,
     val updatedAudit: UpdatedAuditCondition? = null,
-    val price: IntCondition? = null,
-    val quantity: IntCondition? = null,
+    val price: NumberCondition? = null,
+    val quantity: NumberCondition? = null,
     val status: KeywordCondition? = null
 ) {
     fun buildCriteria(): Criteria {

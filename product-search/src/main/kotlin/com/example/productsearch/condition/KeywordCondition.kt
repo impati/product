@@ -9,4 +9,11 @@ data class KeywordCondition(
     override fun buildCriteria(fieldName: String): Criteria {
         return Criteria(fieldName).`is`(value)
     }
+
+    companion object {
+
+        fun eq(keyword: String?): KeywordCondition? {
+            return keyword?.let { KeywordCondition(keyword) }
+        }
+    }
 }

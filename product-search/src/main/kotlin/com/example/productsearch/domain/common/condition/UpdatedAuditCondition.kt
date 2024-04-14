@@ -8,16 +8,16 @@ import org.springframework.data.elasticsearch.core.query.Criteria
 
 @Getter
 data class UpdatedAuditCondition(
-    val updatedAt: DateCondition,
-    val updatedBy: KeywordCondition
+    val updatedAt: DateCondition? = null,
+    val updatedBy: KeywordCondition? = null
 ) : Condition {
     override fun buildCriteria(fieldName: String): Criteria {
         val criteria = Criteria()
 
-        updatedAt.let {
+        updatedAt?.let {
             criteria.and(it.buildCriteria("$fieldName.updatedAt"))
         }
-        updatedBy.let {
+        updatedBy?.let {
             criteria.and(it.buildCriteria("$fieldName.updatedBy"))
         }
 

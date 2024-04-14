@@ -8,16 +8,16 @@ import org.springframework.data.elasticsearch.core.query.Criteria
 
 @Getter
 data class CreatedAuditCondition(
-    val createdAt: DateCondition,
-    val createdBy: KeywordCondition
+    val createdAt: DateCondition? = null,
+    val createdBy: KeywordCondition? = null
 ) : Condition {
     override fun buildCriteria(fieldName: String): Criteria {
         val criteria = Criteria()
 
-        createdAt.let {
+        createdAt?.let {
             criteria.and(it.buildCriteria("$fieldName.createdAt"))
         }
-        createdBy.let {
+        createdBy?.let {
             criteria.and(it.buildCriteria("$fieldName.createdBy"))
         }
 
