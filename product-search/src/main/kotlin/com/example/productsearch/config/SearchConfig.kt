@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchPropert
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.elasticsearch.client.ClientConfiguration
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration
+import org.springframework.data.elasticsearch.core.RefreshPolicy
 import java.time.Duration
 
 @Configuration
@@ -18,5 +19,9 @@ class SearchConfig(
             .withConnectTimeout(Duration.ofSeconds(5))
             .withSocketTimeout(Duration.ofSeconds(3))
             .build()
+    }
+
+    override fun refreshPolicy(): RefreshPolicy? {
+        return RefreshPolicy.IMMEDIATE
     }
 }
