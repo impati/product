@@ -35,3 +35,7 @@ Content-Type: application/json
 
 ### 상품 히스토리 조회
 GET http://localhost:8080/v1/products/82/histories
+
+### 상품 검색
+GET http://localhost:8080/v1/products?productCreatedTime.startAt=2024-04-11T00:00:00&
+    productCreatedTime.endAt=2024-04-14T00:00:00

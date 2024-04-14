@@ -3,20 +3,20 @@ package com.example.productapi.product.api.controller
 import com.example.productapi.product.api.request.ProductCreateRequest
 import com.example.productapi.product.api.request.ProductEditRequest
 import com.example.productapi.product.api.request.ProductRequest
+import com.example.productapi.product.api.request.ProductSearchRequest
+import com.example.productapi.product.api.response.ProductDetailResponses
 import com.example.productapi.product.api.response.ProductResponse
 import com.example.productapi.product.application.ProductFacade
 import com.example.productdomain.common.CreatedAudit
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductQueryService
 import jakarta.validation.Valid
-import lombok.extern.slf4j.Slf4j
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.net.URI
 import java.time.LocalDateTime.now
 
-@Slf4j
 @RestController
 class ProductController(
     val productFacade: ProductFacade,
@@ -55,6 +55,13 @@ class ProductController(
         productFacade.deleteProduct(productId, UpdatedAudit(now(), request.memberNumber))
 
         return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/v1/products")
+    fun searchProduct(@ModelAttribute productSearchRequest: ProductSearchRequest): ResponseEntity<ProductDetailResponses> {
+        val searchProduct = productFacade.searchProduct(productSearchRequest)
+
+        return ResponseEntity.ok(searchProduct)
     }
 
 

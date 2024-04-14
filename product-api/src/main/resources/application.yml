@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: client,domain
+    include: client,domain,search
 
 permission:
   product:
