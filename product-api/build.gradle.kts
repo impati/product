@@ -9,6 +9,7 @@ plugins {
 dependencies {
 
     implementation(project(":product-domain"))
+    implementation(project(":product-search"))
     implementation(project(":product-client"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
