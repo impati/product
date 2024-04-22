@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 
 @Getter
-@Document(indexName = "products", createIndex = true)
+@Document(indexName = "products", createIndex = false)
 data class ProductDocument(
 
     @Id
