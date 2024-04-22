@@ -6,12 +6,12 @@ import com.example.productsearch.domain.common.document.CreatedAuditDocument
 import com.example.productsearch.domain.common.document.UpdatedAuditDocument
 import lombok.Getter
 import org.springframework.data.annotation.Id
-import org.springframework.data.elasticsearch.annotations.Document
-import org.springframework.data.elasticsearch.annotations.Field
-import org.springframework.data.elasticsearch.annotations.FieldType
+import org.springframework.data.elasticsearch.annotations.*
 
 @Getter
 @Document(indexName = "products", createIndex = false)
+@Setting(settingPath = "es/product/setting.json")
+@Mapping(mappingPath = "es/product/mapping.json")
 data class ProductDocument(
 
     @Id

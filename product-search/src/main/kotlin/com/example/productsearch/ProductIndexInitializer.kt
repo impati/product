@@ -1,5 +1,6 @@
 package com.example.productsearch
 
+import com.example.productsearch.domain.product.document.ProductDocument
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
@@ -13,11 +14,11 @@ class ProductIndexInitializer(
 
     @EventListener(ApplicationReadyEvent::class)
     fun createIndexIfNotExists() {
-//        val indexOperations = elasticsearchOperations.indexOps(ProductDocument::class.java)
-//        if (!indexOperations.exists()) {
-//            println("hello world")
-//            indexOperations.create()
-//            indexOperations.putMapping(indexOperations.createMapping())
-//        }
+        val indexOperations = elasticsearchOperations.indexOps(ProductDocument::class.java)
+
+        if (!indexOperations.exists()) {
+            indexOperations.create()
+            indexOperations.putMapping()
+        }
     }
 }
