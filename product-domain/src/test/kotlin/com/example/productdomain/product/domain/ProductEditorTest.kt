@@ -27,6 +27,7 @@ class ProductEditorTest @Autowired constructor(
             "test2",
             100,
             100,
+            "https://localhost",
             ProductStatus.SOLD_OUT,
             0L
         )
@@ -49,6 +50,7 @@ class ProductEditorTest @Autowired constructor(
             "test2",
             100,
             100,
+            "https://localhost",
             ProductStatus.SOLD_OUT,
             0L
         )
@@ -60,6 +62,7 @@ class ProductEditorTest @Autowired constructor(
                 "test2",
                 100,
                 100,
+                "https://localhost",
                 ProductStatus.SOLD_OUT,
                 0L
             )

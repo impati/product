@@ -1,6 +1,7 @@
 package com.example.productapi.product.api.controller
 
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductHistoryQueryService
 import com.example.productdomain.product.domain.*
@@ -45,6 +46,7 @@ class ProductHistoryControllerTest @Autowired constructor(
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(10),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             1L
         )

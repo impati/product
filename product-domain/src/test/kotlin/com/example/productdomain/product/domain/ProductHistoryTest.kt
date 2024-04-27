@@ -43,6 +43,7 @@ class ProductHistoryTest {
             "new",
             1000000,
             1000000,
+            "https://localhost",
             ProductStatus.SELLING
         )
 

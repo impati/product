@@ -25,13 +25,17 @@ data class ProductCreateRequest(
     val quantity: Int?,
 
     @field:NotBlank
-    val memberNumber: String
+    val memberNumber: String,
+
+    @field:NotBlank
+    val imagePath: String
 ) {
     fun toInput(createdAudit: CreatedAudit): ProductCreateInput {
         return ProductCreateInput(
             name,
             price!!,
             quantity!!,
+            imagePath,
             createdAudit,
             UpdatedAudit(createdAudit.createdAt, createdAudit.createdBy)
         )

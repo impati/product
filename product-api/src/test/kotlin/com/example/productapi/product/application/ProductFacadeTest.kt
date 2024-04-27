@@ -25,7 +25,7 @@ class ProductFacadeTest @Autowired constructor(
     fun createProduct() {
         val memberNumber = "0000"
         val createdAudit = CreatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
-        val request = ProductCreateRequest("test", 1000, 1000, "0000")
+        val request = ProductCreateRequest("test", 1000, 1000, "0000", "https://image")
 
         val productId = productFacade.createProduct(request, createdAudit)
 
@@ -37,7 +37,7 @@ class ProductFacadeTest @Autowired constructor(
     fun createProductFail() {
         val memberNumber = "9999"
         val createdAudit = CreatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
-        val request = ProductCreateRequest("test", 1000, 1000, "0000")
+        val request = ProductCreateRequest("test", 1000, 1000, "0000", "https://image")
 
         assertThatThrownBy { productFacade.createProduct(request, createdAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -50,11 +50,19 @@ class ProductFacadeTest @Autowired constructor(
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
         val productId = productFacade.createProduct(
-            ProductCreateRequest("test", 1000, 1000, "0000"),
+            ProductCreateRequest("test", 1000, 1000, "0000", "https://image"),
             CreatedAudit(createdAt, memberNumber)
         )
         val updateAudit = UpdatedAudit(createdAt.plusDays(1), memberNumber)
-        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, "0000", 0)
+        val request = ProductEditRequest(
+            "test2",
+            10,
+            1,
+            ProductStatus.SELLING,
+            "0000",
+            "https://image",
+            0
+        )
 
         val response = productFacade.editProduct(productId, request, updateAudit)
 
@@ -80,7 +88,7 @@ class ProductFacadeTest @Autowired constructor(
     fun editProductFail() {
         val memberNumber = "9998"
         val updateAudit = UpdatedAudit(LocalDateTime.of(2024, 3, 9, 0, 0), memberNumber)
-        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, memberNumber, 0)
+        val request = ProductEditRequest("test2", 10, 1, ProductStatus.SELLING, memberNumber, "https://localhost", 0)
 
         assertThatThrownBy { productFacade.editProduct(1L, request, updateAudit) }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -93,7 +101,7 @@ class ProductFacadeTest @Autowired constructor(
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
         val productId = productFacade.createProduct(
-            ProductCreateRequest("test", 1000, 1000, "0000"),
+            ProductCreateRequest("test", 1000, 1000, "0000", "https://image"),
             CreatedAudit(createdAt, memberNumber)
         )
         val updateAudit = UpdatedAudit(createdAt.plusDays(1), memberNumber)
@@ -118,7 +126,7 @@ class ProductFacadeTest @Autowired constructor(
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
         val productId = productFacade.createProduct(
-            ProductCreateRequest("test", 1000, 10000, "0000"),
+            ProductCreateRequest("test", 1000, 10000, "0000", "https://image"),
             CreatedAudit(createdAt, memberNumber)
         )
         val request = ProductSearchRequest(
@@ -163,7 +171,7 @@ class ProductFacadeTest @Autowired constructor(
         val memberNumber = "0000"
         val createdAt = LocalDateTime.of(2024, 3, 9, 0, 0)
         productFacade.createProduct(
-            ProductCreateRequest("test", 1000, 1000, "0000"),
+            ProductCreateRequest("test", 1000, 1000, "0000", "https://image"),
             CreatedAudit(createdAt, memberNumber)
         )
         val request = ProductSearchRequest(

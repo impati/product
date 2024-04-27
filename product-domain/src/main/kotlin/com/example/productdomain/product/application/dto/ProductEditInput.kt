@@ -7,6 +7,7 @@ data class ProductEditInput(
     val price: Int,
     val quantity: Int,
     val status: ProductStatus,
+    val imagePath: String,
     val version: Long
 ) {
 
