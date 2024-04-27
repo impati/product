@@ -1,5 +1,6 @@
 package com.example.productdomain.product.application
 
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.config.SpringBootTester
 import com.example.productdomain.product.createDefaultProduct
 import com.example.productdomain.product.domain.*
@@ -22,13 +23,21 @@ class ProductQueryServiceTest @Autowired constructor(
         val foundProduct = productQueryService.getProduct(persistentProduct.id!!)
 
         assertThat(foundProduct)
-            .extracting(Product::id, Product::name, Product::price, Product::quantity, Product::status)
+            .extracting(
+                Product::id,
+                Product::name,
+                Product::price,
+                Product::quantity,
+                Product::status,
+                Product::imagePath
+            )
             .contains(
                 persistentProduct.id,
                 ProductName("test"),
                 ProductPrice(1000),
                 ProductQuantity(100),
-                ProductStatus.PRE_REGISTRATION
+                ProductStatus.PRE_REGISTRATION,
+                ImagePath("https://localhost")
             )
     }
 

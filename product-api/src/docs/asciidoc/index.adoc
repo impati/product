@@ -56,13 +56,24 @@ include::{snippets}/product/delete/request-fields.adoc[]
 
 include::{snippets}/product/delete/http-response.adoc[]
 
+== 상품 검색
+
+=== 요청
+
+include::{snippets}/product/search/http-request.adoc[]
+include::{snippets}/product/search/query-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/product/search/http-response.adoc[]
+include::{snippets}/product/search/response-fields.adoc[]
+
 == 상품 히스토리 조회
 
 === 요청
 
 include::{snippets}/product/product-histories/http-request.adoc[]
 include::{snippets}/product/product-histories/path-parameters.adoc[]
-include::{snippets}/product/product-histories/request-fields.adoc[]
 
 === 응답
 

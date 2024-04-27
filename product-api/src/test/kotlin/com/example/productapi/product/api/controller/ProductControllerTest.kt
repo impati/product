@@ -1,15 +1,17 @@
-package com.example.productapi.product.api
+package com.example.productapi.product.api.controller
 
-import com.example.productapi.product.api.controller.ProductController
-import com.example.productapi.product.api.request.ProductCreateRequest
-import com.example.productapi.product.api.request.ProductEditRequest
-import com.example.productapi.product.api.request.ProductRequest
+import com.example.productapi.product.api.controller.RestDocsUtils.Companion.prettyDocument
+import com.example.productapi.product.api.request.*
+import com.example.productapi.product.api.response.ProductDetailResponse
+import com.example.productapi.product.api.response.ProductDetailResponses
 import com.example.productapi.product.api.response.ProductResponse
-import com.example.productapi.product.application.ProductApplication
+import com.example.productapi.product.application.ProductFacade
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductQueryService
 import com.example.productdomain.product.domain.*
+import com.example.productsearch.condition.operator.NumberOperator
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.Runs
@@ -23,14 +25,10 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationExtension
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
-import org.springframework.restdocs.operation.preprocess.Preprocessors
-import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
-import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
+import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
-import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
-import org.springframework.restdocs.request.RequestDocumentation.pathParameters
+import org.springframework.restdocs.request.RequestDocumentation.*
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.time.LocalDateTime
@@ -44,7 +42,7 @@ class ProductControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
 
     @MockkBean
-    val productApplication: ProductApplication,
+    val productFacade: ProductFacade,
 
     @MockkBean
     val productQueryService: ProductQueryService,
@@ -57,18 +55,19 @@ class ProductControllerTest @Autowired constructor(
     @DisplayName("[POST] [/v1/products] 상품 생성 API")
     fun createProduct() {
         val now = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val request = ProductCreateRequest("test", 1000, 10, "0000")
+        val request = ProductCreateRequest("test", 1000, 10, "0000", "https://image")
         val product = Product(
             CreatedAudit(now, "0000"),
             UpdatedAudit(now, "0000"),
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(10),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             1L
         )
 
-        every { productApplication.createProduct(request, any(CreatedAudit::class)) } returns product.id!!
+        every { productFacade.createProduct(request, any(CreatedAudit::class)) } returns product.id!!
 
         mockMvc.perform(
             post("/v1/products")
@@ -79,15 +78,14 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(handler().methodName("createProduct"))
             .andExpect(header().string("Location", "http://api.test.com:8080/v1/products/" + product.id))
             .andDo(
-                document(
+                prettyDocument(
                     "product/create",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     requestFields(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
-                        fieldWithPath("memberNumber").description("멤버 번호")
+                        fieldWithPath("memberNumber").description("멤버 번호"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                     )
                 )
             )
@@ -104,6 +102,7 @@ class ProductControllerTest @Autowired constructor(
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(10),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             1L
         )
@@ -114,10 +113,8 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(handler().methodName("getProduct"))
             .andExpect(content().string(objectMapper.writeValueAsString(ProductResponse.from(product))))
             .andDo(
-                document(
+                prettyDocument(
                     "product/get",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     pathParameters(parameterWithName("productId").description("상품 ID")),
                     responseFields(
                         fieldWithPath("productId").description("상품 ID"),
@@ -125,6 +122,7 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
                         fieldWithPath("status").description("상품 상태"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                         fieldWithPath("version").description("상품 수정 버전")
                     )
                 )
@@ -136,18 +134,27 @@ class ProductControllerTest @Autowired constructor(
     fun editProduct() {
         val productId = 1L
         val now = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val request = ProductEditRequest("test", 1000, 10, ProductStatus.STOP, "0000", 0)
+        val request = ProductEditRequest(
+            "test",
+            1000,
+            10,
+            ProductStatus.STOP,
+            "0000",
+            "https://localhost",
+            0
+        )
         val product = Product(
             CreatedAudit(now, "0000"),
             UpdatedAudit(now, "0000"),
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(100),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             productId
         )
         every {
-            productApplication.editProduct(productId, request, any(UpdatedAudit::class))
+            productFacade.editProduct(productId, request, any(UpdatedAudit::class))
         } returns (ProductResponse.from(product))
 
         mockMvc.perform(
@@ -159,10 +166,8 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(handler().methodName("editProduct"))
             .andExpect(content().string(objectMapper.writeValueAsString(ProductResponse.from(product))))
             .andDo(
-                document(
+                prettyDocument(
                     "product/edit",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     pathParameters(parameterWithName("productId").description("상품 ID")),
                     requestFields(
                         fieldWithPath("name").description("상품 이름"),
@@ -170,6 +175,7 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("quantity").description("상품 수량"),
                         fieldWithPath("status").description("상품 상태"),
                         fieldWithPath("memberNumber").description("멤버 번호"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                         fieldWithPath("version").description("상품 수정 버전"),
                     ),
                     responseFields(
@@ -177,6 +183,7 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                         fieldWithPath("status").description("상품 상태"),
                         fieldWithPath("version").description("상품 수정 버전")
                     )
@@ -185,12 +192,13 @@ class ProductControllerTest @Autowired constructor(
     }
 
     @Test
+    @DisplayName("[DELETE] [/v1/products/{productId}] 상품 삭제 API")
     fun deleteProduct() {
         val productId = 1L
         val request = ProductRequest("0000")
 
         every {
-            productApplication.deleteProduct(productId, any(UpdatedAudit::class))
+            productFacade.deleteProduct(productId, any(UpdatedAudit::class))
         } just Runs
 
         mockMvc.perform(
@@ -201,14 +209,85 @@ class ProductControllerTest @Autowired constructor(
             .andExpect(status().isNoContent)
             .andExpect(handler().methodName("deleteProduct"))
             .andDo(
-                document(
+                prettyDocument(
                     "product/delete",
-                    preprocessRequest(Preprocessors.prettyPrint()),
-                    preprocessResponse(Preprocessors.prettyPrint()),
                     pathParameters(parameterWithName("productId").description("상품 ID")),
                     requestFields(
                         fieldWithPath("memberNumber").description("멤버 번호")
                     ),
+                )
+            )
+    }
+
+    @Test
+    @DisplayName("[GET] [/v1/products] 상품 검색 API")
+    fun searchProduct() {
+        val request = ProductSearchRequest(
+            createdBy = "root",
+            productName = "hello world",
+            productPrice = NumberOperateRequest(100, NumberOperator.EQUAL),
+            productStatus = ProductStatus.PRE_REGISTRATION,
+            productId = 1L,
+            productCreatedTime = BetweenDateTimeRequest(
+                LocalDateTime.of(2024, 4, 1, 0, 0),
+                LocalDateTime.of(2024, 4, 14, 0, 0)
+            )
+        )
+        val response = ProductDetailResponses(
+            listOf(
+                ProductDetailResponse(
+                    1L,
+                    "hello world",
+                    100,
+                    1000,
+                    ProductStatus.PRE_REGISTRATION,
+                    "root",
+                    LocalDateTime.of(2024, 4, 14, 0, 0),
+                    "root",
+                    LocalDateTime.of(2024, 4, 14, 0, 0)
+                )
+            )
+        )
+        every { productFacade.searchProduct(request) } returns (response)
+
+        mockMvc.perform(
+            get("/v1/products")
+                .param("createdBy", request.createdBy)
+                .param("productName", request.productName)
+                .param("productPrice.price", request.productPrice?.price.toString())
+                .param("productPrice.operator", request.productPrice?.operator?.name)
+                .param("productStatus", request.productStatus?.name)
+                .param("productId", request.productId.toString())
+                .param("productCreatedTime.startAt", request.productCreatedTime?.startAt.toString())
+                .param("productCreatedTime.endAt", request.productCreatedTime?.endAt.toString())
+
+        )
+            .andExpect(status().isOk)
+            .andExpect(handler().methodName("searchProduct"))
+            .andDo(
+                prettyDocument(
+                    "product/search",
+                    relaxedQueryParameters(
+                        parameterWithName("createdBy").description("상품을 생성한 멤버"),
+                        parameterWithName("productName").description("상품 이름"),
+                        parameterWithName("productPrice.price").description("상품 가격"),
+                        parameterWithName("productPrice.operator").description("상품 가격 검색 오퍼레이터"),
+                        parameterWithName("productStatus").description("상품 선택"),
+                        parameterWithName("productId").description("상품 번호"),
+                        parameterWithName("productCreatedTime.startAt").description("상품 생성 검색 시작 날짜"),
+                        parameterWithName("productCreatedTime.endAt").description("상품 생성 검색 끝 날짜")
+                    ),
+                    responseFields(
+                        fieldWithPath("products[].productId").type(JsonFieldType.NUMBER).description("상품 번호"),
+                        fieldWithPath("products[].name").type(JsonFieldType.STRING).description("상품 이름"),
+                        fieldWithPath("products[].price").type(JsonFieldType.NUMBER).description("상품 가격"),
+                        fieldWithPath("products[].quantity").type(JsonFieldType.NUMBER).description("상품 수량"),
+                        fieldWithPath("products[].status").type(JsonFieldType.STRING).description("상품 상태"),
+                        fieldWithPath("products[].createdBy").type(JsonFieldType.STRING).description("상품을 생성한 멤버"),
+                        fieldWithPath("products[].createdAt").type(JsonFieldType.STRING).description("상품이 생성된 날짜"),
+                        fieldWithPath("products[].updatedBy").type(JsonFieldType.STRING).description("상품을 수정한 멤버"),
+                        fieldWithPath("products[].updatedAt").type(JsonFieldType.STRING).description("상품을 수정한 날짜")
+                    )
                 )
             )
     }

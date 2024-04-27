@@ -1,6 +1,7 @@
 package com.example.productdomain.product
 
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.domain.*
 import java.time.LocalDateTime
@@ -15,6 +16,7 @@ fun createDefaultProduct(): Product {
         ProductName("test"),
         ProductPrice(1000),
         ProductQuantity(100),
+        ImagePath("https://localhost"),
         ProductStatus.PRE_REGISTRATION,
         0L
     )
@@ -32,6 +34,7 @@ fun createDefaultProduct(
         ProductName("test"),
         ProductPrice(1000),
         ProductQuantity(100),
+        ImagePath("https://localhost"),
         productStatus,
         0L
     )

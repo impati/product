@@ -1,0 +1,75 @@
+{
+  "properties": {
+    "_class": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "createdAudit": {
+      "properties": {
+        "createdAt": {
+          "type": "date"
+        },
+        "createdBy": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    },
+    "name": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "price": {
+      "type": "long"
+    },
+    "productId": {
+      "type": "long"
+    },
+    "quantity": {
+      "type": "long"
+    },
+    "image": {
+      "type": "keyword"
+    },
+    "status": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "updatedAudit": {
+      "properties": {
+        "updatedAt": {
+          "type": "date"
+        },
+        "updatedBy": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    }
+  }
+}

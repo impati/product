@@ -1,8 +1,10 @@
 package com.example.productdomain.product.domain
 
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.createDefaultProduct
+import com.example.productdomain.product.exception.ProductOptimisticException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -21,13 +23,20 @@ class ProductTest {
             UpdatedAudit(now, memberNumber),
             ProductName("test"),
             ProductPrice(1000),
-            ProductQuantity(100)
+            ProductQuantity(100),
+            ImagePath("https://localhost")
         )
 
 
         assertThat(product)
-            .extracting(Product::name, Product::price, Product::quantity, Product::status)
-            .contains(ProductName("test"), ProductPrice(1000), ProductQuantity(100), ProductStatus.PRE_REGISTRATION);
+            .extracting(Product::name, Product::price, Product::quantity, Product::status, Product::imagePath)
+            .contains(
+                ProductName("test"),
+                ProductPrice(1000),
+                ProductQuantity(100),
+                ProductStatus.PRE_REGISTRATION,
+                ImagePath("https://localhost")
+            );
     }
 
     @Test
@@ -42,7 +51,8 @@ class ProductTest {
             UpdatedAudit(now, memberNumber),
             ProductName("test"),
             ProductPrice(1000),
-            ProductQuantity(100)
+            ProductQuantity(100),
+            ImagePath("https://localhost")
         )
 
         assertThat(product)
@@ -63,6 +73,7 @@ class ProductTest {
                 "other",
                 100000,
                 10000,
+                "https://localhost",
                 ProductStatus.STOP
             )
         })
@@ -96,7 +107,8 @@ class ProductTest {
                 UpdatedAudit(now, memberNumber),
                 ProductName("test".repeat(500)),
                 ProductPrice(1000),
-                ProductQuantity(100)
+                ProductQuantity(100),
+                ImagePath("https://localhost")
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -115,7 +127,8 @@ class ProductTest {
                 UpdatedAudit(now, memberNumber),
                 ProductName("test"),
                 ProductPrice(2_000_000_000),
-                ProductQuantity(100)
+                ProductQuantity(100),
+                ImagePath("https://localhost")
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -134,7 +147,8 @@ class ProductTest {
                 UpdatedAudit(now, memberNumber),
                 ProductName("test"),
                 ProductPrice(1000),
-                ProductQuantity(2_000_000_000)
+                ProductQuantity(2_000_000_000),
+                ImagePath("https://localhost")
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -165,10 +179,21 @@ class ProductTest {
                 "other",
                 100000,
                 10000,
+                "https://localhost",
                 ProductStatus.STOP
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("상품이 이미 삭제되어 변경할 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("상품의 버전이 맞지 않는 경우 ProductOptimisticException 를 throw 한다.")
+    fun checkVersion() {
+        val product = createDefaultProduct(ProductStatus.DELETED)
+
+        assertThatThrownBy { product.checkVersion(2L) }
+            .isInstanceOf(ProductOptimisticException::class.java)
+            .hasMessage("수정에 실패했습니다. 다시 시도해주세요.")
     }
 }

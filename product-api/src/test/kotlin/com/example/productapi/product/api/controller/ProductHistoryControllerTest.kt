@@ -1,10 +1,10 @@
 package com.example.productapi.product.api.controller
 
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductHistoryQueryService
 import com.example.productdomain.product.domain.*
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
@@ -14,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.RestDocumentationExtension
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
-import org.springframework.restdocs.operation.preprocess.Preprocessors
-import org.springframework.restdocs.payload.PayloadDocumentation
-import org.springframework.restdocs.request.RequestDocumentation
+import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -46,6 +46,7 @@ class ProductHistoryControllerTest @Autowired constructor(
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(10),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             1L
         )
@@ -62,19 +63,17 @@ class ProductHistoryControllerTest @Autowired constructor(
             .andExpect(jsonPath("$[0].createdBy").value("0000"))
             .andExpect(jsonPath("$[0].createdAt").value("2024-03-09T00:00:00"))
             .andDo(
-                MockMvcRestDocumentation.document(
+                RestDocsUtils.prettyDocument(
                     "product/product-histories",
-                    Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
-                    Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                    RequestDocumentation.pathParameters(
-                        RequestDocumentation.parameterWithName("productId").description("상품 ID")
+                    pathParameters(
+                        parameterWithName("productId").description("상품 ID")
                     ),
-                    PayloadDocumentation.responseFields(
-                        PayloadDocumentation.fieldWithPath("[].name").description("상품 이름"),
-                        PayloadDocumentation.fieldWithPath("[].price").description("상품 가격"),
-                        PayloadDocumentation.fieldWithPath("[].status").description("상품 상태"),
-                        PayloadDocumentation.fieldWithPath("[].createdAt").description("수정 일자"),
-                        PayloadDocumentation.fieldWithPath("[].createdBy").description("수정자")
+                    responseFields(
+                        fieldWithPath("[].name").description("상품 이름"),
+                        fieldWithPath("[].price").description("상품 가격"),
+                        fieldWithPath("[].status").description("상품 상태"),
+                        fieldWithPath("[].createdAt").description("수정 일자"),
+                        fieldWithPath("[].createdBy").description("수정자")
                     )
                 )
             )

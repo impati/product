@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    include: client,domain,search
+
+permission:
+  product:
+    create-permission-id: 123 # TODO 상품 생성 권한을 생성한뒤 ID 를 구해서 넣어줘야함
+    edit-permission-id: 124 # TODO 상품 수정 권한을 생성한뒤 ID 를 구해서 넣어줘야함
+    delete-permission-id: 125 # TODO 상품 삭제 권한을 생성한뒤 ID 를 구해서 넣어줘야함
+
+aws:
+  s3:
+    region: "region"
+    bucket-name: "bucket"
+    directory: "directory"
+    accessKey: "access"
+    secretKey: "secret"

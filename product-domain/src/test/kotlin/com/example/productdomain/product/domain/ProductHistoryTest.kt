@@ -23,14 +23,16 @@ class ProductHistoryTest {
                 ProductHistory::name,
                 ProductHistory::price,
                 ProductHistory::status,
-                ProductHistory::productId
+                ProductHistory::productId,
+                ProductHistory::imagePath
             )
             .contains(
                 CreatedAudit(product.updatedAudit.updatedAt, product.updatedAudit.updatedBy),
                 product.name.value,
                 product.price.value,
                 product.status,
-                product.id
+                product.id,
+                product.imagePath.value
             )
     }
 
@@ -43,6 +45,7 @@ class ProductHistoryTest {
             "new",
             1000000,
             1000000,
+            "https://localhost",
             ProductStatus.SELLING
         )
 
@@ -54,7 +57,8 @@ class ProductHistoryTest {
                 ProductHistory::name,
                 ProductHistory::price,
                 ProductHistory::status,
-                ProductHistory::productId
+                ProductHistory::productId,
+                ProductHistory::imagePath
             )
             .contains(
                 CreatedAudit(LocalDateTime.of(2024, 3, 16, 0, 0), "root"),
@@ -62,7 +66,8 @@ class ProductHistoryTest {
                 1000000,
                 1000000,
                 ProductStatus.SELLING,
-                product.id
+                product.id,
+                "https://localhost"
             )
     }
 

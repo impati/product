@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 
 
 @SpringBootApplication(
-    scanBasePackages = ["com.example.productapi", "com.example.productdomain", "com.example.productclient"]
+    scanBasePackages = ["com.example.productapi", "com.example.productdomain", "com.example.productclient", "com.example.productsearch"]
 )
 class ProductApiApplication
 

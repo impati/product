@@ -21,6 +21,9 @@ class ProductHistory(
     @Column(name = "product_id")
     val productId: Long,
 
+    @Column(name = "image")
+    val imagePath: String,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_history_id")
@@ -34,7 +37,8 @@ class ProductHistory(
                 product.name.value,
                 product.price.value,
                 product.status,
-                product.id!!
+                product.id!!,
+                product.imagePath.value
             )
         }
     }

@@ -6,6 +6,7 @@ import com.example.productdomain.product.application.dto.ProductCreateInput
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 
 data class ProductCreateRequest(
@@ -15,20 +16,26 @@ data class ProductCreateRequest(
 
     @field:Min(0)
     @field:Max(10_000_000_000)
-    val price: Int,
+    @field:NotNull
+    val price: Int?,
 
     @field:Min(0)
     @field:Max(10_000_000_000)
-    val quantity: Int,
+    @field:NotNull
+    val quantity: Int?,
 
     @field:NotBlank
-    val memberNumber: String
+    val memberNumber: String,
+
+    @field:NotBlank
+    val imagePath: String
 ) {
     fun toInput(createdAudit: CreatedAudit): ProductCreateInput {
         return ProductCreateInput(
             name,
-            price,
-            quantity,
+            price!!,
+            quantity!!,
+            imagePath,
             createdAudit,
             UpdatedAudit(createdAudit.createdAt, createdAudit.createdBy)
         )
