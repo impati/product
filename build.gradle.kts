@@ -51,6 +51,9 @@ subprojects {
 
     dependencies {
 
+        implementation("software.amazon.awssdk:bom:2.17.100")
+        implementation(platform("software.amazon.awssdk:bom:2.17.100"))
+        
         compileOnly("org.projectlombok:lombok")
         annotationProcessor("org.projectlombok:lombok")
 

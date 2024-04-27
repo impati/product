@@ -1,6 +1,7 @@
 package com.example.productsearch.domain.product.service
 
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.domain.*
 import com.example.productdomain.product.event.ProductStatusEvent
@@ -41,6 +42,7 @@ class ProductDocumentServiceTest @Autowired constructor(
                 UpdatedAuditDocument(LocalDateTime.of(2024, 4, 14, 0, 0), "impati"),
                 100,
                 100_000,
+                "https//localhost",
                 ProductStatus.PRE_REGISTRATION
             )
         )
@@ -60,6 +62,7 @@ class ProductDocumentServiceTest @Autowired constructor(
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(100),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             99L
         )

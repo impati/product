@@ -28,6 +28,9 @@ data class ProductEditRequest(
     @field:NotBlank
     val memberNumber: String,
 
+    @field:NotBlank
+    val imagePath: String,
+
     @field:NotNull
     val version: Long?
 ) {
@@ -38,6 +41,7 @@ data class ProductEditRequest(
             price!!,
             quantity!!,
             status,
+            imagePath,
             version!!
         )
     }

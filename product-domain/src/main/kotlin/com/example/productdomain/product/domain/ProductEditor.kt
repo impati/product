@@ -20,6 +20,7 @@ class ProductEditor(
         name: String,
         price: Int,
         quantity: Int,
+        imagePath: String,
         status: ProductStatus,
         version: Long
     ): Product {
@@ -27,6 +28,6 @@ class ProductEditor(
 
         product.checkVersion(version)
 
-        return product.apply { update(updatedAudit, name, price, quantity, status) }
+        return product.apply { update(updatedAudit, name, price, quantity, imagePath, status) }
     }
 }

@@ -7,6 +7,7 @@ import com.example.productapi.product.api.response.ProductDetailResponses
 import com.example.productapi.product.api.response.ProductResponse
 import com.example.productapi.product.application.ProductFacade
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.application.ProductQueryService
 import com.example.productdomain.product.domain.*
@@ -54,13 +55,14 @@ class ProductControllerTest @Autowired constructor(
     @DisplayName("[POST] [/v1/products] 상품 생성 API")
     fun createProduct() {
         val now = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val request = ProductCreateRequest("test", 1000, 10, "0000")
+        val request = ProductCreateRequest("test", 1000, 10, "0000", "https://image")
         val product = Product(
             CreatedAudit(now, "0000"),
             UpdatedAudit(now, "0000"),
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(10),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             1L
         )
@@ -82,7 +84,8 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
-                        fieldWithPath("memberNumber").description("멤버 번호")
+                        fieldWithPath("memberNumber").description("멤버 번호"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                     )
                 )
             )
@@ -99,6 +102,7 @@ class ProductControllerTest @Autowired constructor(
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(10),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             1L
         )
@@ -118,6 +122,7 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
                         fieldWithPath("status").description("상품 상태"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                         fieldWithPath("version").description("상품 수정 버전")
                     )
                 )
@@ -129,13 +134,22 @@ class ProductControllerTest @Autowired constructor(
     fun editProduct() {
         val productId = 1L
         val now = LocalDateTime.of(2024, 3, 9, 0, 0)
-        val request = ProductEditRequest("test", 1000, 10, ProductStatus.STOP, "0000", 0)
+        val request = ProductEditRequest(
+            "test",
+            1000,
+            10,
+            ProductStatus.STOP,
+            "0000",
+            "https://localhost",
+            0
+        )
         val product = Product(
             CreatedAudit(now, "0000"),
             UpdatedAudit(now, "0000"),
             ProductName("test"),
             ProductPrice(1000),
             ProductQuantity(100),
+            ImagePath("https://localhost"),
             ProductStatus.PRE_REGISTRATION,
             productId
         )
@@ -161,6 +175,7 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("quantity").description("상품 수량"),
                         fieldWithPath("status").description("상품 상태"),
                         fieldWithPath("memberNumber").description("멤버 번호"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                         fieldWithPath("version").description("상품 수정 버전"),
                     ),
                     responseFields(
@@ -168,6 +183,7 @@ class ProductControllerTest @Autowired constructor(
                         fieldWithPath("name").description("상품 이름"),
                         fieldWithPath("price").description("상품 가격"),
                         fieldWithPath("quantity").description("상품 수량"),
+                        fieldWithPath("imagePath").description("상품 이미지 경로"),
                         fieldWithPath("status").description("상품 상태"),
                         fieldWithPath("version").description("상품 수정 버전")
                     )

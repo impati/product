@@ -39,6 +39,7 @@ class ProductCommandService(
                 input.name,
                 input.price,
                 input.quantity,
+                input.imagePath,
                 input.status,
                 input.version
             )

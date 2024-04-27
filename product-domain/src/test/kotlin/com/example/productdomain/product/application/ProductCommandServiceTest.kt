@@ -24,7 +24,8 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 기본 정보로 상품을 생성한다.")
     fun create() {
         val now = LocalDateTime.of(2024, 3, 6, 0, 0)
-        val input = ProductCreateInput("test", 1000, 10, CreatedAudit(now, "0000"), UpdatedAudit(now, "0000"))
+        val input =
+            ProductCreateInput("test", 1000, 10, "https://image", CreatedAudit(now, "0000"), UpdatedAudit(now, "0000"))
 
         val product = productCommandService.create(input)
 
@@ -38,7 +39,8 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 기본 정보로 상품을 생성시 히스토리도 생성한다.")
     fun createHistory() {
         val now = LocalDateTime.of(2024, 3, 6, 0, 0)
-        val input = ProductCreateInput("test", 1000, 10, CreatedAudit(now, "0000"), UpdatedAudit(now, "0000"))
+        val input =
+            ProductCreateInput("test", 1000, 10, "https://image", CreatedAudit(now, "0000"), UpdatedAudit(now, "0000"))
 
         val product = productCommandService.create(input)
 
@@ -58,7 +60,7 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 정보를 수정한다.")
     fun edit() {
         val beforeProduct = productRepository.save(createDefaultProduct())
-        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, 0)
+        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, "https://localhost", 0)
 
         productCommandService.edit(
             beforeProduct.id!!,
@@ -82,7 +84,7 @@ class ProductCommandServiceTest @Autowired constructor(
             thread(start = true) {
                 productCommandService.edit(
                     beforeProduct.id!!,
-                    ProductEditInput("test$it", 100, 10000, ProductStatus.SELLING, 0),
+                    ProductEditInput("test$it", 100, 10000, ProductStatus.SELLING, "https://localhost", 0),
                     UpdatedAudit(LocalDateTime.of(2023, 12, 31, 0, 0), "root")
                 )
             }
@@ -98,7 +100,7 @@ class ProductCommandServiceTest @Autowired constructor(
     @DisplayName("상품 수정시 히스토리도 생성한다.")
     fun editHistory() {
         val beforeProduct = productRepository.save(createDefaultProduct())
-        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, 0)
+        val input = ProductEditInput("test2", 100, 10000, ProductStatus.SELLING, "https://localhost", 0)
 
         val afterProduct = productCommandService.edit(
             beforeProduct.id!!,

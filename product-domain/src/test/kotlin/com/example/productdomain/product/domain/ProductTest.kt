@@ -1,6 +1,7 @@
 package com.example.productdomain.product.domain
 
 import com.example.productdomain.common.CreatedAudit
+import com.example.productdomain.common.ImagePath
 import com.example.productdomain.common.UpdatedAudit
 import com.example.productdomain.product.createDefaultProduct
 import com.example.productdomain.product.exception.ProductOptimisticException
@@ -22,13 +23,20 @@ class ProductTest {
             UpdatedAudit(now, memberNumber),
             ProductName("test"),
             ProductPrice(1000),
-            ProductQuantity(100)
+            ProductQuantity(100),
+            ImagePath("https://localhost")
         )
 
 
         assertThat(product)
-            .extracting(Product::name, Product::price, Product::quantity, Product::status)
-            .contains(ProductName("test"), ProductPrice(1000), ProductQuantity(100), ProductStatus.PRE_REGISTRATION);
+            .extracting(Product::name, Product::price, Product::quantity, Product::status, Product::imagePath)
+            .contains(
+                ProductName("test"),
+                ProductPrice(1000),
+                ProductQuantity(100),
+                ProductStatus.PRE_REGISTRATION,
+                ImagePath("https://localhost")
+            );
     }
 
     @Test
@@ -43,7 +51,8 @@ class ProductTest {
             UpdatedAudit(now, memberNumber),
             ProductName("test"),
             ProductPrice(1000),
-            ProductQuantity(100)
+            ProductQuantity(100),
+            ImagePath("https://localhost")
         )
 
         assertThat(product)
@@ -64,6 +73,7 @@ class ProductTest {
                 "other",
                 100000,
                 10000,
+                "https://localhost",
                 ProductStatus.STOP
             )
         })
@@ -97,7 +107,8 @@ class ProductTest {
                 UpdatedAudit(now, memberNumber),
                 ProductName("test".repeat(500)),
                 ProductPrice(1000),
-                ProductQuantity(100)
+                ProductQuantity(100),
+                ImagePath("https://localhost")
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -116,7 +127,8 @@ class ProductTest {
                 UpdatedAudit(now, memberNumber),
                 ProductName("test"),
                 ProductPrice(2_000_000_000),
-                ProductQuantity(100)
+                ProductQuantity(100),
+                ImagePath("https://localhost")
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -135,7 +147,8 @@ class ProductTest {
                 UpdatedAudit(now, memberNumber),
                 ProductName("test"),
                 ProductPrice(1000),
-                ProductQuantity(2_000_000_000)
+                ProductQuantity(2_000_000_000),
+                ImagePath("https://localhost")
             )
         }
             .isInstanceOf(IllegalArgumentException::class.java)
@@ -166,6 +179,7 @@ class ProductTest {
                 "other",
                 100000,
                 10000,
+                "https://localhost",
                 ProductStatus.STOP
             )
         }

@@ -9,6 +9,7 @@ class ProductResponse(
     val price: Int,
     val quantity: Int,
     val status: ProductStatus,
+    val imagePath: String,
     val version: Long
 ) {
 
@@ -20,6 +21,7 @@ class ProductResponse(
                 product.price.value,
                 product.quantity.value,
                 product.status,
+                product.imagePath.value,
                 product.version
             )
         }
