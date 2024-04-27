@@ -10,9 +10,8 @@ permission:
 
 aws:
   s3:
-    region: ${REGION}
-    bucket-name: ${BUCKET}
-    directory: ${DIRECTORY}
-    accessKey: ${ACCESS_KEY}
-    secretKey: ${SECRET_KEY}
-
+    region: "region"
+    bucket-name: "bucket"
+    directory: "directory"
+    accessKey: "access"
+    secretKey: "secret"
