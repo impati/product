@@ -42,6 +42,7 @@ class ProductDocumentServiceTest @Autowired constructor(
                 UpdatedAuditDocument(LocalDateTime.of(2024, 4, 14, 0, 0), "impati"),
                 100,
                 100_000,
+                "https//localhost",
                 ProductStatus.PRE_REGISTRATION
             )
         )

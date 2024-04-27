@@ -86,6 +86,7 @@ class ProductConditionElasticsearchRepositoryImplTest @Autowired constructor(
             UpdatedAuditDocument(LocalDateTime.of(2024, 4, 10, 0, 0), "root"),
             1000,
             100,
+            "https://localhost",
             ProductStatus.SELLING
         )
         productDocumentRepository.save(document)
@@ -100,6 +101,7 @@ class ProductConditionElasticsearchRepositoryImplTest @Autowired constructor(
             UpdatedAuditDocument(LocalDateTime.of(2024, 4, 10, 0, 0), "root"),
             1000,
             100,
+            "https://localhost",
             ProductStatus.SELLING
         )
 

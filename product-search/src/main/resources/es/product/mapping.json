@@ -43,6 +43,9 @@
     "quantity": {
       "type": "long"
     },
+    "image": {
+      "type": "keyword"
+    },
     "status": {
       "type": "text",
       "fields": {

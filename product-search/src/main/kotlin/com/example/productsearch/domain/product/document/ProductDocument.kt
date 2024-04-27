@@ -34,6 +34,9 @@ data class ProductDocument(
     val quantity: Int,
 
     @Field(type = FieldType.Keyword)
+    val image: String,
+
+    @Field(type = FieldType.Keyword)
     val status: ProductStatus
 ) {
 
@@ -47,6 +50,7 @@ data class ProductDocument(
                 UpdatedAuditDocument.from(product.updatedAudit),
                 product.price.value,
                 product.quantity.value,
+                product.imagePath.value,
                 product.status
             )
         }
